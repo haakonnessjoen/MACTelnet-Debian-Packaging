@@ -1,0 +1,2 @@
+/usr/bin/{mactelnet,macping,mndp}
+/usr/share/man/man1/{mactelnet,macping,mndp}.1

@@ -1,0 +1,31 @@
+Source: mactelnet
+Section: net
+Priority: extra
+Maintainer: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Build-Depends: debhelper (>= 8.1.2~)
+Standards-Version: 3.9.1
+Homepage: https://github.com/haakonnessjoen/MAC-Telnet/downloads
+#Vcs-Git: git://git.debian.org/collab-maint/mactelnet.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/mactelnet.git;a=summary
+
+Package: mactelnet-client
+Architecture: linux-any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Console tools for telneting and pinging via MAC addresses
+ Ping, discovery and telnet tools for connecting to Mikrotik RouterOS
+ devices, or other MAC-Telnetd powered machines/devices.
+ .
+ This tool can communicate over the local area network using UDP packets
+ with a MAC-address as destination. You can telnet Linux machines that
+ have installed mactelnet-server, or a Mikrotik RouterOS device.
+ .
+ Uses Mikrotik's own proprietary protocol. Included are also MNDP discovery
+ application, and macping to ping via the mactelnet protocol.
+
+Package: mactelnet-server
+Architecture: linux-any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Telnet daemon for accepting connections via MAC addresses
+ This is a telnet daemon that uses Mikrotiks proprietary MAC-Telnet protocol.
+ You will be enabled to "mac-telnet" from Linux machines with mactelnet-client
+ or Mikrotik RouterOS devices which already has tools for this.

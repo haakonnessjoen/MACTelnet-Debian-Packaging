@@ -1,0 +1,14 @@
+# Defaults for mactelnet-server initscript
+# sourced by /etc/init.d/mactelnet-server
+# installed at /etc/default/mactelnet-server by the maintainer scripts
+
+#
+# This is a POSIX shell fragment
+#
+
+# Disable daemon by setting the next parameter to yes
+ENABLED=yes
+
+# Additional options that are passed to the Daemon.
+# Read manual page for mactelnetd(1) for options descriptions
+DAEMON_OPTS="-n"
