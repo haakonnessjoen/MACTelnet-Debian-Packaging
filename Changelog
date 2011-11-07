@@ -1,0 +1,649 @@
+commit 18139b6417e6d09a9c8ddf3291179d77c19bde5e
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Thu Aug 11 00:46:42 2011 +0200
+
+    New minior version
+
+commit 053b2fdf6400a2557bd1a4340f2fbeefedfcff13
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Thu Aug 11 00:30:29 2011 +0200
+
+    Cleanup in Makefile and docs according to tips from Nelson A. de Oliveira
+
+commit 7852da33d25ced23652089f1942ff38e52693ebc
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Wed Aug 10 23:57:04 2011 +0200
+
+    Remove unused variables. Thanks to "Nelson A. de Oliveira" <naoliv@gmail.com>
+
+commit de36588baa006bd6f5b2a2ce35914dba8ee53d5a
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun May 1 22:26:22 2011 +0200
+
+    Add important information to manual pages
+
+commit a4cc2b5e1ab748241f8a86bb4cd09043abc02a02
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun May 1 16:25:27 2011 +0200
+
+    Cleaned up description and synopsis of files
+
+commit 133b70c2dc57213d8c3891b0d6c925f73419b555
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun May 1 14:30:36 2011 +0200
+
+    Added manual pages and added license text to all .h and .c files.
+
+commit 96eaa3fff04027dc8760b570ec64592bec1777fd
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Feb 27 16:11:51 2011 +0100
+
+    New minior version
+
+commit d4141ba5a1ca0a3374cbd2e0ff55b3c63719ec28
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Feb 27 16:08:26 2011 +0100
+
+    Removed .deb specific files and updated makefile/readme
+
+commit 9f9610327c6b5dd3f738b6dddcc77646376d9fd9
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Feb 27 15:09:56 2011 +0100
+
+    Add foreground mode support for mactelnetd.
+
+commit 5b786ccb2a21937fcc6e1a29167db47f1d78abb5
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Feb 27 14:27:29 2011 +0100
+
+    Code cleanup.
+
+commit e149992b6487bb41308a1893500e35bbe6d195c0
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Feb 27 13:38:03 2011 +0100
+
+    Missing two endianness checks/handling. Tested successfully with MIPS Malta 4Kc qemu emulator (big endianed)
+
+commit abd75d40f31787f289de8e34854c00672af49b2c
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Thu Feb 24 21:13:57 2011 +0100
+
+    Fixed textual typo
+
+commit 5eb1c8e5c125902e803c3ff99ca88438223a6495
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Thu Feb 24 17:05:02 2011 +0100
+
+    Enhance send_udp routine to actually check the incoming packet for ACK
+
+commit cb6fe86292fd85a67dfd930cdc351fec0ddf96bc
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Thu Feb 24 16:46:30 2011 +0100
+
+    Code cleanup
+
+commit f77147c698364fb38c226895556176abd61d3217
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Thu Feb 24 04:48:17 2011 +0100
+
+    Fixed permissions of slave pts, so the connecting user has access to his own pts. Now applications like screen also works.
+
+commit 51073f378c05590539dabdbe61034ab548078e6e
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Thu Feb 24 03:13:26 2011 +0100
+
+    Have faith in htons/ntohs functions being transparent on big endianed build environments.
+
+commit d5f936e9c017f884b070f41748ce502a0bb131d7
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Thu Feb 24 03:06:39 2011 +0100
+
+    Bugfix of two bugs making raw mode unusable/unstable.
+
+commit a2b0eda2d0ac5910ade5fa1193dae0c56a521ecb
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Wed Feb 23 12:29:41 2011 +0100
+
+    Added "fast mode" to macping. Also fixed the way the summary was printed out, to imitate standard ping utility.
+
+commit 0e0ff418da0d95f9e7b8a25d7643dd4c5e8731d8
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Wed Feb 23 12:11:29 2011 +0100
+
+    Added endianness checks in udp.c, for raw packets
+
+commit 59cdd34a3248acac61fd3edebca860066fd4c2fd
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Wed Feb 23 11:59:02 2011 +0100
+
+    Bugfix in mactelnet. Raw mode did not successfully autodetect outgoing interface.
+
+commit d009537a6eceda1bdc5abddb50f41f2030d0dacc
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Feb 21 18:05:49 2011 +0100
+
+    Fixed up Makefile a bit
+
+commit c499742b5d3065da5f232cab9efb060eb67e1a23
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Feb 21 17:31:04 2011 +0100
+
+    Busted :P
+
+commit 0589a8fc2e521ac30167eb51d4a373477e98c525
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Feb 21 17:26:08 2011 +0100
+
+    Removed invalid text in help screen of mactelnet
+
+commit 28ce685f858511f7fa65c06e091e7d473dc2cc94
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Feb 21 17:20:13 2011 +0100
+
+    Add endianness checking/conversion.
+
+commit 0058ac3010d79bf086ddfa0be9a44ee419bf7058
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Feb 21 15:53:35 2011 +0100
+
+    Added MT_PTYPE_PING/PONG support in mactelnetd and added a macping tool. For this udp-checksum code was also added for raw packets.
+
+commit d3f4e55538788ec7569c5eb4a21622c516aa0d92
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Wed Feb 16 19:39:11 2011 +0100
+
+    Fix: Send IP address (if available) of machine also when sending mndp packets using raw udp mode
+
+commit 09d8ca45a5f0711ae28988ccfbaf917439c31b44
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Wed Feb 16 19:13:27 2011 +0100
+
+    Rewrote MNDP parser, and added MNDP broadcast routines for mactelnetd. Thanks to "Marcin Ulikowski" <elceef@itsec.pl> for MNDP reverse engineering. mactelnetd will now be recognized by other routeros devices/applications as neighbours.
+
+commit ec7d3b484b317195f6facf79d469bb9c8939a2e5
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Wed Feb 16 04:05:27 2011 +0100
+
+    Forgot to remove some debugging
+
+commit ac5b0eadef805d968bb922e0cf1b635da3e80972
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Wed Feb 16 03:54:49 2011 +0100
+
+    mactelnetd only listened on interfaces with an ip on it. Rewrote mactelnetd to use all IFs it finds MAC addresses on, not only the ones with IP. Testing version, to be cleaned up.
+
+commit 82fd4b116dd061b72dd88800a45b4cd302191b57
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Dec 27 00:22:38 2010 +0100
+
+    Added support for broadcast packets in mactelnetd also. Fixed a bug where the device index was hardcoded in send_custom_udp(). Renamed "broadcast_mode" to "use_raw_socket".
+
+commit e28d1808ff78900205bfd6e52964a695e5048118
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Dec 26 23:17:58 2010 +0100
+
+    Improved the keepalive-timer in mactelnet, and fixed a terminal reset bug if your connection timed out.
+
+commit 7e31888710ee50b99e569f8b64b0cdf80dd69a5d
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Dec 26 20:12:57 2010 +0100
+
+    Added code to check if it should answer mactelnet packets or not in mactelnetd.
+
+commit 423615514bd1cd5e5a90b68ee25f9fbb030f7af1
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Dec 26 17:57:47 2010 +0100
+
+    Janitor work
+
+commit 98b82ee3a77ef4ffd79472e0fd56d6deced1d8e4
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Dec 26 15:28:37 2010 +0100
+
+    Code cleanup, and made timeout-acking more correct
+
+commit 425d09a5ddbb1aed1c6c11a11165719fa63d0a5e
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sat Dec 25 23:48:03 2010 +0100
+
+    Official version 0.2
+
+commit 52edeba4b440aa0cc84d458caa40fb40f8488a63
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sat Dec 25 23:20:32 2010 +0100
+
+    Add support for dash-seperated mac addresses
+
+commit 25476c74e2fe93163e50f41a0dc15b3088c6f65f
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sat Dec 25 23:08:49 2010 +0100
+
+    Moved global protocol info to protocol header, where it belongs
+
+commit 8e2e73c7d861595f7e9a94eb4d7faf60addc0a2d
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sat Dec 25 22:58:50 2010 +0100
+
+    Added simple DATA packet retransmission support.
+
+commit 93d82ea7dd279e9a0eba68d4de49dc87ffa5ad7c
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sat Dec 25 19:18:22 2010 +0100
+
+    Change naming convention on variable names as well
+
+commit 2d9057c497585c4eb76e5f3ad4f623da56a2e28c
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Fri Dec 24 01:52:10 2010 +0100
+
+    Changed naming convention on function names
+
+commit dbadc1ab26b3cca6b3697d9c07f284f582dde75d
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Fri Dec 24 01:51:44 2010 +0100
+
+    Fixed a bug where the mndp port/socket was not closed after a parseMNDP call.
+
+commit c91ff9668142a9d0aac0bc364ccaf40611fa9c72
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Thu Dec 23 15:54:40 2010 +0100
+
+    Cleaned up code and added -Wall to the compiler flags. Moved packet types over to enums for more ease of use.
+
+commit 20746581ba3e8c6cda0851e47b27528401168247
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Thu Dec 23 12:42:58 2010 +0100
+
+    Added u/wtmp logout code, and did some minior code cleanup.
+
+commit fae8147bc4a3c646dfa852074266b23f8a242450
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Thu Dec 23 03:33:51 2010 +0100
+
+    Show mac address of client in syslog, and save correct mac address for wtmp.
+
+commit ff590f394b61c88922ef5a5bb5349b81c6d0be55
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Thu Dec 23 03:10:56 2010 +0100
+
+    Fix silly bug that made mactelnetd connections time out after only 65k bytes
+
+commit 53ef36ccf50163e72b646ef4bf673669f9c8de2e
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Thu Dec 23 01:33:14 2010 +0100
+
+    Added syslog logging. Added daemonizing of application. Cleaned up login code to correctly set up controlling terminal.
+
+commit 1cf099bd1a371ef3a307906c46ae128f6e2bf025
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Tue Dec 21 00:56:19 2010 +0100
+
+    Added "nologin" support. And cleaned up a little duplicated code.
+
+commit fadddf392dd27b0fffd8b66c38f240bf0f8afd86
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Dec 20 23:54:20 2010 +0100
+
+    Fix silly warning about ether_ntoa argument
+
+commit bc9266f2ae0ebf80deb2817dded7a26d8c65686b
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Dec 20 00:09:52 2010 +0100
+
+    Added wtmp/utmp support. Fixed setuid/setgid bug and error detection. Added motd message. Minior code cleanup.
+
+commit 1fb3f642b29c4e9af002dac9830bd98f7b25e145
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Dec 19 20:44:42 2010 +0100
+
+    Code cleanup in mactelnet daemon
+
+commit 59525a228a1ebf2aca46d5be63f8280b274a490a
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Nov 28 23:31:13 2010 +0100
+
+    Added a little documentation in the source code
+
+commit 3f669049e77b87cca9168fbd55838bd679b573c4
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Fri Nov 19 01:52:54 2010 +0100
+
+    Handle network devices without address information correctly.
+
+commit 749229fa367aed0bb14822a4e2fbbf112d06033e
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Wed Nov 3 03:12:11 2010 +0100
+
+    Skip loopback interfaces. They seldom/never have a MAC address, and you probably won't run a MAC-Telnet server there. Speeds up autodetect.
+
+commit 1c11ee970aaa1dde00028508517e2f8964cd54ea
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Wed Nov 3 03:04:41 2010 +0100
+
+    Added missing file, documentation fixup, and minifixup in makefile
+
+commit 3103d2c9c237101abf143dd19e9998a426c0d9ec
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Wed Nov 3 02:49:33 2010 +0100
+
+    Started code for auto-detecting interface. Working proof of concept version. Raw socket version not updated yet.
+
+commit 40362c46806d033316e859db772f46c5652fbea3
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Tue Nov 2 18:09:32 2010 +0100
+
+    Simplified the way parseControlPacket is looped/called
+
+commit a993f53f4ab8e08bfa2c198d9375f85686e87c9f
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Nov 1 23:41:49 2010 +0100
+
+    Minior fix: Move mac-address code downwards according to the order of arguments. So problems with the ifname will be reported before problems with the mac address/identity name.
+
+commit 50d04396d84bcf0adf1b44223c4d751562639225
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Nov 1 23:06:26 2010 +0100
+
+    Removed dependency of libssl/crypto. Added L. Peter Deutsch's implementation of MD5 instead.
+
+commit f241a46d9901f6c6c679838b35c90cc3619167be
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Nov 1 22:46:34 2010 +0100
+
+    Added support for connecting to your router via the router identity name. (using MNDP)
+
+commit 1b94292a0fb5cfeb42aaf0039e7865a07aa1ef3f
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Oct 18 16:44:33 2010 +0200
+
+    A lot of small fixes to mactelnetd
+
+commit 94113dbaec206b4c15b5b03871ae3642efaf0290
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Oct 11 01:16:10 2010 +0200
+
+    Renamed files, added license info and did some minior fixes.
+
+commit 8a9a47179332700c5c270dafc6ef014417015f99
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Oct 11 00:02:11 2010 +0200
+
+    First version of mac-telnet server daemon mactelnetd. Use with care until it has been tested enough. Not for production use. To be cleaned up a lot.
+
+commit 7b0347285ecb0b78ce0b699a1a6c9e50e22f7f07
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Tue Oct 5 00:07:20 2010 +0200
+
+    Added files for packaging mactelnet for debian/ubuntu
+
+commit 5bd380b35e7b8f6acca24635f393d216e92cb2b5
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Oct 4 21:56:03 2010 +0200
+
+    Updated readme to reflect recent changes.
+
+commit 4f2f6ad13a03cc253069cb63224112f7a3a82fbb
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Oct 4 21:46:37 2010 +0200
+
+    * Added support for using broadcast messages, instead of using raw socket to send data.
+    * Started using getopts to handle command line arguments.
+    * Cleaned up some debug stuff.
+
+commit d22fb7e1c12eaeeef90af97386fe3c5c84a0a9eb
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Oct 4 16:06:52 2010 +0200
+
+    Security fixes, etc. strn* functions does not terminate strings if they exceed the length parameter.
+
+commit 4c8978d341731e5aa49bc877214d145bfde0bc20
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Oct 4 11:38:00 2010 +0200
+
+    Minior code cleanup
+
+commit 3e4740e94d5151783085b16df6d76692cfa9cb5f
+Author: Omni Flux <omniflux+devel@omniflux.com>
+Date:   Mon Oct 4 03:10:24 2010 -0600
+
+    Send query MNDP packet before listening for MNDP packets
+
+commit 0130c93407610720cb1b0c654a2dd79f9a4f165d
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Oct 3 03:47:16 2010 +0200
+
+    Code cleanup
+
+commit 5025b70fae9ab2d79deac9e08d806a85c339ddbe
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Oct 3 03:46:35 2010 +0200
+
+    Fix invalid counter sizes which would break connection after 65535 bytes of data in one direction
+
+commit fb6540513cdb72f874cdb409e493171c94e59460
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Oct 3 03:15:23 2010 +0200
+
+    Documentation changes
+
+commit 065bb72362c52603bd615b0a69e24a6f00f03932
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Oct 3 02:44:37 2010 +0200
+
+    Changed how packet generation functions get access to the buffer, so they won't let you overflow the buffer, and they will keep track of the packet size "internally".
+
+commit a64b7069f5144dbd2e76f3a9d104d63ca64c7cd1
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sat Oct 2 20:33:45 2010 +0200
+
+    Commented the rest of main()
+
+commit 2643ff20775e36ddd37c806fc7f943c2c0919f2b
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sat Oct 2 20:28:15 2010 +0200
+
+    Cleanup and comment main.c
+
+commit 39c77a5676f77061ba0a8a116f29e35664808a60
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sat Oct 2 19:49:37 2010 +0200
+
+    Rewrote auth code. Also removed bug where password had to be 8 characters long. And where md5sum could not have a character of value 0 in it.
+
+commit 1d6edd6cb66c65d9b5b13637465a901d17a23b10
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sat Oct 2 16:48:11 2010 +0200
+
+    Add some missing data to the internal protocol headers
+
+commit b451464a088999137097e7b364942bac12a65e67
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sat Oct 2 16:38:26 2010 +0200
+
+    Drop double/old packets. No more random buggy terminal!
+
+commit 5d3806897b1d9b406135ba9b8b460ed5b5a21cf0
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sat Oct 2 11:48:42 2010 +0200
+
+    Updated README
+
+commit 01982930a4852345c3b54d2c82f5c5ae7a2d970f
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sat Oct 2 11:19:52 2010 +0200
+
+    Send more than 1 byte at the time if more exists in the buffer
+
+commit b898569df5c7388500d76d9b96f9111ba09c2ff3
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Fri Oct 1 12:24:39 2010 +0200
+
+    Made the password parameter optional; You may now write your password in a prompt instead of polluting your history with passwords.
+
+commit 79153f655b1f8af1df6b36875c2d0b61386b33a9
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Fri Oct 1 11:34:25 2010 +0200
+
+    Added install option to Makefile, and fixed a "typo"
+
+commit d50a913b21b1ceec3bf22915caa87a8a9b44e3d1
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Fri Oct 1 11:09:27 2010 +0200
+
+    Added keepalive functionality
+
+commit c9711c2fa0ae0efbf0e847d4226d0ab04edc05f2
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Fri Oct 1 10:31:28 2010 +0200
+
+    Some code cleanup, and support for several sessions/instances on one interface. (random source port)
+
+commit 471b10f6b547bb9b6088c8b079360ad91aaf8510
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Fri Oct 1 09:34:16 2010 +0200
+
+    Header-cleanup and get terminal type from ENV
+
+commit 2c20599c89f256e656b089907742d2297d7a317c
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Fri Oct 1 09:27:48 2010 +0200
+
+    Added resize handler
+
+commit 046c16b0778d6b4112a32b61c274871dc6a0b43b
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Fri Oct 1 00:44:09 2010 +0200
+
+    Milestone 1: First fully functional (proof of concept) version.
+
+commit c56e309956da3d41420db1c5d41ccf245c594e45
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Thu Sep 30 11:42:19 2010 +0200
+
+    Add a lot of comments to the code
+
+commit 87341fcc53b58d270528192607d3ce547abffa77
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Thu Sep 30 00:13:13 2010 +0200
+
+    Added a simple tool for listing local mikrotik routers by mac address
+
+commit c90ce96f3f86404ee85b390a3ed4b575a257423d
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Tue Sep 28 00:07:49 2010 +0200
+
+    Comment cleanup
+
+commit 86460e9be93df399286e63b8142853d6e5aee5a9
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Sep 27 16:46:07 2010 +0200
+
+    Minifixes
+
+commit ee5e037df930a4a877cd5de865dd884b3d83814f
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Sep 27 15:37:18 2010 +0200
+
+    No need to re-invent a square version of the wheel... cleanup
+
+commit 3afa38b2e38a53441ce55bf5932553a8672268bf
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Sep 27 15:26:47 2010 +0200
+
+    Cleaned up src/dst mac/ip handling a bit. Now fully automates source ip/mac addresses according to ethernet device chosen.
+
+commit ccda1f219d6a07b59d2ebf69f7c0864aba397098
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Sep 27 13:30:31 2010 +0200
+
+    Forgot to free memory
+
+commit f68b4c26f99cad5efb608fab92ccb7d2a54ca7a8
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Sep 27 13:28:19 2010 +0200
+
+    Started code for automatically defining src ip/mac for packets
+
+commit dcf815703b327bd6500c0bdea60cb85f67994d5a
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Sep 26 22:13:47 2010 +0200
+
+    Cleanup, and correctly handle connection closing
+
+commit db4ec3f49051dbd35e2274a0cd1c93193d4511ae
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Sep 26 21:28:30 2010 +0200
+
+    Command line control of mac, user and pass... main() should be rewritten, and should autodetect src mac/ip address, or let you specify
+
+commit 52ac09faa8fdd5d25b02f310ca6b2c497b45806d
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Sep 26 20:51:39 2010 +0200
+
+    GPL'd it
+
+commit 0543208957f3f1a14f66d0c70fcc813e779f7638
+Author: root <root@phone01.(none)>
+Date:   Sun Sep 26 20:32:34 2010 +0200
+
+    Working login, buggy terminal-data reception
+
+commit d0b22a46b53c968de3ec85022251f318d97e6b27
+Author: root <root@phone01.(none)>
+Date:   Sun Sep 26 10:38:19 2010 +0200
+
+    Files splitted
+
+commit f7cfcdb6b1fcfaf149dce2195181f3d8707306b6
+Author: root <root@phone01.(none)>
+Date:   Sun Sep 26 02:00:11 2010 +0200
+
+    Connection working, auth received, control packets parsed. TODO: Cleanup/filesplit and create login + terminal code.
+
+commit 10a51f687aab0673ff6be875b3b3e0dfe304e2b2
+Author: root <root@phone01.(none)>
+Date:   Sat Sep 25 21:03:28 2010 +0200
+
+    Last version
+
+commit 6ad8dc8a9585fbd3f5ea45d70878edaa713c6af5
+Author: root <root@aquarius.(none)>
+Date:   Sat Sep 25 18:12:53 2010 +0200
+
+    Done splitting files
+
+commit 61809b4cf7467ae3988a2f6832c94d4d211552c8
+Author: root <root@aquarius.(none)>
+Date:   Sat Sep 25 18:09:38 2010 +0200
+
+    Done splitting files
+
+commit 7d9e514c276648b1db2286e780649f08c17225ca
+Author: root <root@aquarius.(none)>
+Date:   Sat Sep 25 18:03:41 2010 +0200
+
+    cleanup2
+
+commit cebde44c31c50939ea690718a83a55eb5016fb2a
+Author: root <root@aquarius.(none)>
+Date:   Sat Sep 25 17:59:53 2010 +0200
+
+    cleanup
+
+commit 3148553efa081253644f6c20724dfbddb487d7f7
+Author: root <root@aquarius.(none)>
+Date:   Sat Sep 25 17:56:20 2010 +0200
+
+    rename
+
+commit efab1538ab2a7c39aae29a8d3870d00059fc52a0
+Author: root <root@aquarius.(none)>
+Date:   Sat Sep 25 17:55:20 2010 +0200
+
+    First working version: main2.c
+
+commit 0aeab827e8011cdd71e29865574567325f830a4e
+Author: root <root@aquarius.(none)>
+Date:   Sat Sep 25 12:35:50 2010 +0200
+
+    First import
