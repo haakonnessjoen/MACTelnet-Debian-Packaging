@@ -5,8 +5,8 @@ Maintainer: Håkon Nessjøen <haakon.nessjoen@gmail.com>
 Build-Depends: debhelper (>= 8.1.2~)
 Standards-Version: 3.9.2
 Homepage: https://github.com/haakonnessjoen/MAC-Telnet/downloads
-#Vcs-Git: git://git.debian.org/collab-maint/mactelnet.git
-#Vcs-Browser: http://git.debian.org/?p=collab-maint/mactelnet.git;a=summary
+Vcs-Git: git://github.com/haakonnessjoen/MACTelnet-Debian-Packaging.git
+Vcs-Browser: https://github.com/haakonnessjoen/MACTelnet-Debian-Packaging
 
 Package: mactelnet-client
 Architecture: linux-any
