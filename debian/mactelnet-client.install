@@ -1,2 +1,6 @@
-/usr/bin/{mactelnet,macping,mndp}
-/usr/share/man/man1/{mactelnet,macping,mndp}.1
+/usr/bin/mactelnet
+/usr/bin/macping
+/usr/bin/mndp
+/usr/share/man/man1/mactelnet.1
+/usr/share/man/man1/macping.1
+/usr/share/man/man1/mndp.1
