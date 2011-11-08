@@ -1,0 +1,1 @@
+mactelnet-server binary: non-standard-file-perm etc/mactelnetd.users 0600 != 0644
