@@ -1,3 +1,9 @@
+mactelnet (0.3.2-2) unstable; urgency=low
+
+  * Fixed a problem where the init script was unable to stop mactelnet-server.
+
+ -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Tue, 10 Nov 2011 20:41:03 +0100
+
 mactelnet (0.3.2-1) unstable; urgency=low
 
   * Initial release (Closes: #615823)
