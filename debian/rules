@@ -1,4 +1,14 @@
 #!/usr/bin/make -f
+
+DEB_HOST_ARCH_OS := $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
+CFLAGS := $(shell dpkg-buildflags --get CFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)
+LDFLAGS := $(shell dpkg-buildflags --get LDFLAGS)
+
+# librt only needed on kfreebsd
+ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
+	LIBS := -lrt
+endif
+
 %:
 	dh $@ 
 
