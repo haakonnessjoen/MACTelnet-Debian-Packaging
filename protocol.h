@@ -33,6 +33,13 @@
 #define MT_MNDP_TIMEOUT 5
 #define MT_MNDP_LONGTIMEOUT 120
 
+#ifndef ETH_ALEN
+#define ETH_ALEN 6
+#endif
+#ifndef IPV4_ALEN
+#define IPV4_ALEN 4
+#endif
+
 /* Packet type */
 enum mt_ptype {
 	MT_PTYPE_SESSIONSTART,
@@ -127,7 +134,7 @@ extern int mndp_add_attribute(struct mt_packet *packet, enum mt_mndp_attrtype at
 
 extern struct mt_mndp_info *parse_mndp(const unsigned char *data, const int packet_len);
 int query_mndp(const char *identity, unsigned char *mac);
-int query_mndp_verbose(char *address, unsigned char *dstmac);
+int query_mndp_or_mac(char *address, unsigned char *dstmac, int verbose);
 
 /* Number of milliseconds between each retransmission */
 #define MAX_RETRANSMIT_INTERVALS 9

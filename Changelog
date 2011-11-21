@@ -1,3 +1,123 @@
+commit 1ac6a78d69634e5c54bb8b6182995d1d84a9cf71
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Nov 21 19:17:22 2011 +0100
+
+    Fix Makefile to include LDFLAGS and LIBS
+
+commit 6a9192d4d4f1d5c6849de158a707f4cc759c3ea5
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Nov 21 18:20:53 2011 +0100
+
+    Removed librt as mandatory library. Only needed for kfreebsd.
+
+commit a5b710a45671c1b9504130d83d3ebe7fe8a65c5a
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Nov 13 09:54:22 2011 +0100
+
+    Added support for reloading list of interfaces/addresses on HUP signal, and fixed notification to connections of TERM signal.
+
+commit 4d3923c1cc947fbf1a6b23e2adf6915c47aac8d1
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Nov 13 08:19:06 2011 +0100
+
+    Fix bug in interface enumerator
+
+commit e78481d2e5a4a3ea133980403041579b048ede74
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Nov 13 06:45:39 2011 +0100
+
+    Code "speedup".
+
+commit 62fbf67c2a27b10e6ff534c7795a96e38d259e55
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Nov 13 06:40:22 2011 +0100
+
+    Added comment to remind myself not from writing "non-root" version of macping any more times
+
+commit 3084b5ec02f72c7c420a5c6687a61df637005ceb
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun Nov 13 06:03:15 2011 +0100
+
+    Simplified checking of mac address (code cleanup)
+
+commit 632bc61784657ca10da047c38596bde9d336998f
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sat Nov 12 05:15:36 2011 +0100
+
+    New version. 0.3.3. Moved versioning into config.h
+
+commit 94ac14d2765051a8992c3a822547bc09260492df
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sat Nov 12 04:53:12 2011 +0100
+
+    Rewrote the interface handling. Added full support for kFreeBSD, have not tested with FreeBSD.
+
+commit 904d05c3d9dec35bad0413f933ea690868a09f4f
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Tue Nov 8 23:40:06 2011 +0100
+
+    Cleanup
+
+commit d876aad77b29f410c9c4218636482cab59504fac
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Tue Nov 8 23:06:39 2011 +0100
+
+    Clean up and bugfix endianess handling
+
+commit b7543bdfda84c0287dd0d183fa764c9931a4c211
+Merge: 75ff364... 754ed32...
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Thu Nov 3 12:24:21 2011 -0700
+
+    Merge pull request #3 from bbonev/master
+    
+    misc fixes from Boian Bonev
+
+commit 754ed32a9979fd34ee5ceaab451ddd5810faabc6
+Author: Boian Bonev <bbonev@ipacct.com>
+Date:   Fri Nov 4 00:30:41 2011 +0530
+
+    move trypassword inside the connection state; generate enckey only once per session
+
+commit a987cb67dcda1986b66434244afca24b50bff15d
+Author: Boian Bonev <bbonev@ipacct.com>
+Date:   Thu Nov 3 23:16:20 2011 +0530
+
+    handle signals in foreground mode as well
+
+commit ab1d9657ca42ab7576473bcd6726ba5e8ab2fcbe
+Author: Boian Bonev <bbonev@ipacct.com>
+Date:   Thu Nov 3 21:48:35 2011 +0530
+
+    tell the new shell that its a login one
+
+commit 75ff364cd556c1ad8cfe742f0d58d5751807c111
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Wed Nov 2 20:42:17 2011 +0100
+
+    Buffer overflow prevention.
+
+commit 2df57f592c0760b15707e87537e29aebaa83ee87
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Wed Nov 2 19:28:05 2011 +0100
+
+    Quiet mode and no terminal setup when not talking to a tty
+
+commit 0df0f028bb355547ac50ea5756edb14e3d12f562
+Merge: 18139b6... a60f40d...
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Mon Oct 31 01:43:34 2011 -0700
+
+    Merge pull request #2 from bbonev/master
+    
+    fix uptime byte order, by bbonev
+
+commit a60f40dd38f7f2d3b621bff914589c5be7803165
+Author: Boian Bonev <bbonev@ipacct.com>
+Date:   Fri Oct 28 10:18:00 2011 +0530
+
+    use unified byte order conversion for uptime
+
 commit 18139b6417e6d09a9c8ddf3291179d77c19bde5e
 Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
 Date:   Thu Aug 11 00:46:42 2011 +0200

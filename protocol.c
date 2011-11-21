@@ -16,15 +16,19 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#define _BSD_SOURCE
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#ifdef __LINUX__
 #include <linux/if_ether.h>
+#endif
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netinet/ether.h>
 #include <time.h>
+#include <endian.h>
 #include "protocol.h"
 #include "config.h"
 
@@ -69,7 +73,6 @@ int init_packet(struct mt_packet *packet, enum mt_ptype ptype, unsigned char *sr
 }
 
 int add_control_packet(struct mt_packet *packet, enum mt_cptype cptype, void *cpdata, int data_len) {
-	unsigned int templen;
 	unsigned char *data = packet->data + packet->size;
 
 	/* Something is really wrong. Packets should never become over 1500 bytes */
@@ -95,11 +98,12 @@ int add_control_packet(struct mt_packet *packet, enum mt_cptype cptype, void *cp
 
 	/* Data length */
 #if BYTE_ORDER == LITTLE_ENDIAN
-	templen = data_len;
-	templen = htonl(templen);
-	memcpy(data + 5, &templen, sizeof(templen));
+	{
+		unsigned int templen;
+		templen = htonl(data_len);
+		memcpy(data + 5, &templen, sizeof(templen));
+	}
 #else
-#pragma unused(templen)
 	memcpy(data + 5, &data_len, sizeof(data_len));
 #endif
 
@@ -155,10 +159,10 @@ void parse_packet(unsigned char *data, struct mt_mactelnet_hdr *pkthdr) {
 	pkthdr->ptype = data[1];
 
 	/* src ethernet addr */
-	memcpy(pkthdr->srcaddr, data+2,6);
+	memcpy(pkthdr->srcaddr, data + 2, ETH_ALEN);
 
 	/* dst ethernet addr */
-	memcpy(pkthdr->dstaddr, data+8,6);
+	memcpy(pkthdr->dstaddr, data + 8, ETH_ALEN);
 
 	if (mt_direction_fromserver) {
 		/* Session key */
@@ -166,10 +170,10 @@ void parse_packet(unsigned char *data, struct mt_mactelnet_hdr *pkthdr) {
 		pkthdr->seskey = ntohs(pkthdr->seskey);
 
 		/* server type */
-		memcpy(&(pkthdr->clienttype), data+16, 2);
+		memcpy(&(pkthdr->clienttype), data + 16, 2);
 	} else {
 		/* server type */
-		memcpy(&(pkthdr->clienttype), data+14, 2);
+		memcpy(&(pkthdr->clienttype), data + 14, 2);
 
 		/* Session key */
 		memcpy(&(pkthdr->seskey), data + 16, sizeof(pkthdr->seskey));
@@ -221,6 +225,11 @@ int parse_control_packet(unsigned char *packetdata, int data_len, struct mt_mact
 		/* Control packet data length */
 		memcpy(&(cpkthdr->length), data + 5, sizeof(cpkthdr->length));
 		cpkthdr->length = ntohl(cpkthdr->length);
+		
+		/* We want no buffer overflows */
+		if (cpkthdr->length >= MT_PACKET_LEN - 22 - int_pos) {
+			cpkthdr->length = MT_PACKET_LEN - 1 - 22 - int_pos;
+		}
 
 		/* Set pointer to actual data */
 		cpkthdr->data = data + 9;
@@ -352,15 +361,8 @@ struct mt_mndp_info *parse_mndp(const unsigned char *data, const int packet_len)
 
 			case MT_MNDPTYPE_TIMESTAMP:
 				memcpy(&(packet.uptime), p, 4);
-/* Seems like ping uptime is transmitted as little endian? */
-#if BYTE_ORDER == BIG_ENDIAN
-				packet.uptime = (
-					((packet.uptime & 0x000000FF) << 24) +
-					((packet.uptime & 0x0000FF00) << 8) +
-					((packet.uptime & 0x00FF0000) >> 8) +
-					((packet.uptime & 0xFF000000) >> 24)
-				);
-#endif
+				/* Seems like ping uptime is transmitted as little endian? */
+				packet.uptime = le32toh(packet.uptime);
 				break;
 
 			case MT_MNDPTYPE_HARDWARE:
@@ -484,7 +486,7 @@ done:
  * This function accepts either a full MAC address using : or - as seperators.
  * Or a router hostname. The hostname will be searched for via MNDP broadcast packets.
  */
-int query_mndp_verbose(char *address, unsigned char *dstmac) {
+int query_mndp_or_mac(char *address, unsigned char *dstmac, int verbose) {
 	char *p = address;
 	int colons = 0;
 	int dashs = 0;
@@ -517,14 +519,20 @@ int query_mndp_verbose(char *address, unsigned char *dstmac) {
 		 * Not a valid mac-address.
 		 * Search for Router by identity name, using MNDP
 		 */
-		fprintf(stderr, "Searching for '%s'...", address);
+		if (verbose) {
+			fprintf(stderr, "Searching for '%s'...", address);
+		}
 		if (!query_mndp(address, dstmac)) {
-			fprintf(stderr, "not found\n");
+			if (verbose) {
+				fprintf(stderr, "not found\n");
+			}
 			return 0;
 		}
 
 		/* Router found, display mac and continue */
-		fprintf(stderr, "found\n");
+		if (verbose) {
+			fprintf(stderr, "found\n");
+		}
 	} else {
 		/* Convert mac address string to ether_addr struct */
 		ether_aton_r(address, (struct ether_addr *)dstmac);
