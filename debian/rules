@@ -9,6 +9,10 @@ ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
 	LIBS := -lrt
 endif
 
+export CFLAGS
+export LDFLAGS
+export LIBS
+
 %:
 	dh $@ 
 
