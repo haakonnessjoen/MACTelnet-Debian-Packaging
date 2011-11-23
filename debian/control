@@ -9,7 +9,7 @@ Vcs-Git: git://github.com/haakonnessjoen/MACTelnet-Debian-Packaging.git
 Vcs-Browser: https://github.com/haakonnessjoen/MACTelnet-Debian-Packaging
 
 Package: mactelnet-client
-Architecture: linux-any
+Architecture: linux-any kfreebsd-any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Console tools for telneting and pinging via MAC addresses
  Ping, discovery and telnet tools for connecting to Mikrotik RouterOS
@@ -23,7 +23,7 @@ Description: Console tools for telneting and pinging via MAC addresses
  application, and macping to ping via the mactelnet protocol.
 
 Package: mactelnet-server
-Architecture: linux-any
+Architecture: linux-any kfreebsd-any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Telnet daemon for accepting connections via MAC addresses
  This is a telnet daemon that uses Mikrotiks proprietary MAC-Telnet protocol.
