@@ -1,3 +1,63 @@
+commit b3e038acf0a8303b943ebd06e2d067a0761a6edd
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Tue Jul 17 22:25:21 2012 +0200
+
+    New version 0.4.0.
+
+commit 8bb7351cc1598da5ef6b799c019c75509a9a642f
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Tue Jul 17 22:20:59 2012 +0200
+
+    Updated internationalization, sped up code by using fputs instead of fprintf. Updated readme. Bumped version.
+
+commit 092e396b00ee4805c2a924f1b1c00cbc6e07a33c
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Tue Jul 17 22:19:19 2012 +0200
+
+    Added -U flag for dropping privileges in raw mode in mactelnet. Manually merged from Ali Onur Uyar's commit 8720817a0b in his MAC-Telnet repo at github (aouyar)
+
+commit 8d0a3a56e5ce113a962ff04255dc38abac08640f
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun May 20 17:20:00 2012 +0200
+
+    Fixed missing translation in i18n template. Bugfixed Makefile a bit.
+
+commit 7175eb2a1d83ae10a7bc0c1961a6d13fb40a1456
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sun May 20 16:53:56 2012 +0200
+
+    Added -l option to mactelnet, so you don't have to know about the mndp tool to find it.
+
+commit 2d1bb7ebafb3cfe9161854d1ac0b05133fa05139
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Tue Feb 28 15:26:34 2012 +0100
+
+    Add comment about \r\n in i18n
+
+commit 0918879970d8b399512a9a4553d7989f2434c9a7
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Tue Feb 28 14:39:42 2012 +0100
+
+    Update po template
+
+commit 86990fe50070268508caf171c825217c7da21ef5
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Tue Feb 28 14:37:13 2012 +0100
+
+    Cleaned up i18n
+
+commit 210b1b5574afb381b87d6d34860009a905ed6848
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Tue Feb 28 14:32:53 2012 +0100
+
+    Added i18n support
+
+commit 11ee3dc65c67d6a5c98347287cee50963029d412
+Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
+Date:   Sat Feb 11 13:48:11 2012 +0100
+
+    Bugfix. Don't die on interfaces without address.
+
 commit 1ac6a78d69634e5c54bb8b6182995d1d84a9cf71
 Author: Håkon Nessjøen <haakon.nessjoen@gmail.com>
 Date:   Mon Nov 21 19:17:22 2011 +0100
