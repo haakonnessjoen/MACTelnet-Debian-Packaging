@@ -1,3 +1,9 @@
+mactelnet (0.4.0-1) unstable; urgency=low
+
+  * Upstream release 0.4.0
+
+ -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Tue, 17 Jul 2012 23:47:23 +0100
+
 mactelnet (0.3.4-1) unstable; urgency=low
 
   * Upstream release 0.3.4
