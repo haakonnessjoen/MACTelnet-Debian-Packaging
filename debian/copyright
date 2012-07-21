@@ -1,10 +1,10 @@
-Format: http://dep.debian.net/deps/dep5/
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: MAC-Telnet
 Source: https://github.com/haakonnessjoen/MAC-Telnet/
 
 Files: *
 Copyright: Copyright 2011 Håkon Nessjøen <haakon.nessjoen@gmail.com>
-License: GPL-2
+License: GPL-2+
  This program is free software; you can redistribute it
  and/or modify it under the terms of the GNU General Public
  License as published by the Free Software Foundation; either

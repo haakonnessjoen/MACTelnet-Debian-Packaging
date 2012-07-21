@@ -1,8 +1,10 @@
 mactelnet (0.4.0-1) unstable; urgency=low
 
   * Upstream release 0.4.0
+  * Updated copyright file with correct license information.
+  * Updated copyright file with new format version.
 
- -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Tue, 17 Jul 2012 23:47:23 +0100
+ -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Tue, 21 Jul 2012 10:11:12 +0100
 
 mactelnet (0.3.4-1) unstable; urgency=low
 
