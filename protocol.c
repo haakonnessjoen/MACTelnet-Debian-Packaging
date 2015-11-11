@@ -28,9 +28,19 @@
 #endif
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#if defined(__FreeBSD__)
+#include <net/ethernet.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#else
 #include <netinet/ether.h>
+#endif
 #include <time.h>
+#if defined(__FreeBSD__)
+#include <sys/endian.h>
+#else
 #include <endian.h>
+#endif
 #include "protocol.h"
 #include "config.h"
 
@@ -229,7 +239,7 @@ int parse_control_packet(unsigned char *packetdata, int data_len, struct mt_mact
 		/* Control packet data length */
 		memcpy(&(cpkthdr->length), data + 5, sizeof(cpkthdr->length));
 		cpkthdr->length = ntohl(cpkthdr->length);
-		
+
 		/* We want no buffer overflows */
 		if (cpkthdr->length >= MT_PACKET_LEN - 22 - int_pos) {
 			cpkthdr->length = MT_PACKET_LEN - 1 - 22 - int_pos;
@@ -264,10 +274,10 @@ int mndp_init_packet(struct mt_packet *packet, unsigned char version, unsigned c
 	header->version = version;
 	header->ttl = ttl;
 	header->cksum = 0;
-	
-	packet->size = sizeof(header);
-	
-	return sizeof(header);
+
+	packet->size = sizeof(*header);
+
+	return sizeof(*header);
 }
 
 int mndp_add_attribute(struct mt_packet *packet, enum mt_mndp_attrtype attrtype, void *attrdata, unsigned short data_len) {
@@ -298,6 +308,7 @@ int mndp_add_attribute(struct mt_packet *packet, enum mt_mndp_attrtype attrtype,
 struct mt_mndp_info *parse_mndp(const unsigned char *data, const int packet_len) {
 	const unsigned char *p;
 	static struct mt_mndp_info packet;
+	struct mt_mndp_info *packetp = &packet;
 	struct mt_mndp_hdr *mndp_hdr;
 
 	/* Check for valid packet length */
@@ -305,11 +316,11 @@ struct mt_mndp_info *parse_mndp(const unsigned char *data, const int packet_len)
 		return NULL;
 	}
 
-	bzero(&packet, sizeof(packet));
+	bzero(packetp, sizeof(*packetp));
 
 	mndp_hdr = (struct mt_mndp_hdr*)data;
 
-	memcpy(&(packet.header), mndp_hdr, sizeof(mndp_hdr));
+	memcpy(&packetp->header, mndp_hdr, sizeof(struct mt_mndp_hdr));
 
 	p = data + sizeof(struct mt_mndp_hdr);
 
@@ -326,13 +337,16 @@ struct mt_mndp_info *parse_mndp(const unsigned char *data, const int packet_len)
 
 		/* Check if len is invalid */
 		if (p + len > data + packet_len) {
+		        fprintf(stderr, "%s: invalid data: "
+				        "%p + %u > %p + %d\n",
+					__func__, p, len, data, packet_len);
 			break;
 		}
 
 		switch (type) {
 			case MT_MNDPTYPE_ADDRESS:
 				if (len >= ETH_ALEN) {
-					memcpy(packet.address, p, ETH_ALEN);
+					memcpy(packetp->address, p, ETH_ALEN);
 				}
 				break;
 
@@ -341,8 +355,8 @@ struct mt_mndp_info *parse_mndp(const unsigned char *data, const int packet_len)
 					len = MT_MNDP_MAX_STRING_LENGTH;
 				}
 
-				memcpy(packet.identity, p, len);
-				packet.identity[len] = '\0';
+				memcpy(packetp->identity, p, len);
+				packetp->identity[len] = '\0';
 				break;
 
 			case MT_MNDPTYPE_PLATFORM:
@@ -350,8 +364,8 @@ struct mt_mndp_info *parse_mndp(const unsigned char *data, const int packet_len)
 					len = MT_MNDP_MAX_STRING_LENGTH;
 				}
 
-				memcpy(packet.platform, p, len);
-				packet.platform[len] = '\0';
+				memcpy(packetp->platform, p, len);
+				packetp->platform[len] = '\0';
 				break;
 
 			case MT_MNDPTYPE_VERSION:
@@ -359,14 +373,14 @@ struct mt_mndp_info *parse_mndp(const unsigned char *data, const int packet_len)
 					len = MT_MNDP_MAX_STRING_LENGTH;
 				}
 
-				memcpy(packet.version, p, len);
-				packet.version[len] = '\0';
+				memcpy(packetp->version, p, len);
+				packetp->version[len] = '\0';
 				break;
 
 			case MT_MNDPTYPE_TIMESTAMP:
-				memcpy(&(packet.uptime), p, 4);
+				memcpy(&packetp->uptime, p, 4);
 				/* Seems like ping uptime is transmitted as little endian? */
-				packet.uptime = le32toh(packet.uptime);
+				packetp->uptime = le32toh(packetp->uptime);
 				break;
 
 			case MT_MNDPTYPE_HARDWARE:
@@ -374,28 +388,37 @@ struct mt_mndp_info *parse_mndp(const unsigned char *data, const int packet_len)
 					len = MT_MNDP_MAX_STRING_LENGTH;
 				}
 
-				memcpy(packet.hardware, p, len);
-				packet.hardware[len] = '\0';
+				memcpy(packetp->hardware, p, len);
+				packetp->hardware[len] = '\0';
 				break;
 
 			case MT_MNDPTYPE_SOFTID:
 				if (len > MT_MNDP_MAX_STRING_LENGTH) {
 					len = MT_MNDP_MAX_STRING_LENGTH;
 				}
-				
-				memcpy(packet.softid, p, len);
-				packet.softid[len] = '\0';
+
+				memcpy(packetp->softid, p, len);
+				packetp->softid[len] = '\0';
+				break;
+
+			case MT_MNDPTYPE_IFNAME:
+				if (len > MT_MNDP_MAX_STRING_LENGTH) {
+					len = MT_MNDP_MAX_STRING_LENGTH;
+				}
+
+				memcpy(packetp->ifname, p, len);
+				packetp->ifname[len] = '\0';
 				break;
 
 			/*default:
 				 Unhandled MNDP type
 			*/
 		}
-		
+
 		p += len;
 	}
-	
-	return &packet;
+
+	return packetp;
 }
 
 int query_mndp(const char *identity, unsigned char *mac) {
@@ -458,7 +481,7 @@ int query_mndp(const char *identity, unsigned char *mac) {
 
 		timeout.tv_sec = fastlookup ? MT_MNDP_TIMEOUT : MT_MNDP_LONGTIMEOUT;
 		timeout.tv_usec = 0;
-	
+
 		select(sock + 1, &read_fds, NULL, NULL, &timeout);
 		if (!FD_ISSET(sock, &read_fds)) {
 			goto done;
