@@ -21,7 +21,9 @@
 
 #define DEBUG 0
 
-#define PROGRAM_VERSION "0.4.0"
+#define PROGRAM_VERSION "0.4.1"
+
+#define AUTOLOGIN_PATH "~/.mactelnet"
 
 #if defined(__APPLE__) && defined(__MACH__)
 #define PLATFORM_NAME "Mac OS X"

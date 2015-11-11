@@ -20,8 +20,17 @@
 #include <locale.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <arpa/inet.h>
+#include <signal.h>
+#include <unistd.h>
+#include <errno.h>
+#if defined(__FreeBSD__)
+#include <net/ethernet.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#else
 #include <netinet/ether.h>
+#endif
+#include <arpa/inet.h>
 #include <string.h>
 #include "protocol.h"
 #include "config.h"
@@ -35,8 +44,15 @@
 unsigned char mt_direction_fromserver = 0;
 
 int main(int argc, char **argv)  {
+	int batch_mode = 0;
 #else
-int mndp(void)  {
+
+void sig_alarm(int signo)
+{
+	exit(0);
+}
+
+int mndp(int timeout, int batch_mode)  {
 #endif
 	int sock,result;
 	int optval = 1;
@@ -46,6 +62,7 @@ int mndp(void)  {
 #ifdef FROM_MACTELNET
 	/* mactelnet.c has this set to 1 */
 	mt_direction_fromserver = 0;
+	signal(SIGALRM, sig_alarm);
 #endif
 
 	setlocale(LC_ALL, "");
@@ -88,12 +105,27 @@ int mndp(void)  {
 		}
 	}
 
-	printf("\n\E[1m%-17s %s\E[m\n", _("MAC-Address"), _("Identity (platform version hardware) uptime"));
+	if (batch_mode) {
+		printf("%s\n", _("MAC-Address,Identity,Platform,Version,Hardware,Uptime,Softid,Ifname,IP"));
+	} else {
+		printf("\n\E[1m%-15s %-17s %s\E[m\n", _("IP"), _("MAC-Address"), _("Identity (platform version hardware) uptime"));
+	}
+#ifdef FROM_MACTELNET
+	if (timeout > 0) {
+		alarm(timeout);
+	}
+#endif
 
 	while(1) {
 		struct mt_mndp_info *packet;
+		struct sockaddr_in addr;
+		socklen_t addrlen = sizeof(addr);
+		char ipstr[INET_ADDRSTRLEN];
+
+		memset(&addr, 0, addrlen);
+
 		/* Wait for a UDP packet */
-		result = recvfrom(sock, buff, MT_PACKET_LEN, 0, 0, 0);
+		result = recvfrom(sock, buff, MT_PACKET_LEN, 0, (struct sockaddr *)&addr, &addrlen);
 		if (result < 0) {
 			fprintf(stderr, _("An error occured. aborting\n"));
 			exit(1);
@@ -102,16 +134,32 @@ int mndp(void)  {
 		/* Parse MNDP packet */
 		packet = parse_mndp(buff, result);
 
-		if (packet != NULL) {
+		if (packet != NULL && !batch_mode) {
+
 			/* Print it */
+			printf("%-15s ", inet_ntop(addr.sin_family, &addr.sin_addr, ipstr, sizeof ipstr));
 			printf("%-17s %s", ether_ntoa((struct ether_addr *)packet->address), packet->identity);
 			if (packet->platform != NULL) {
 				printf(" (%s %s %s)", packet->platform, packet->version, packet->hardware);
 			}
 			if (packet->uptime > 0) {
-				printf(_(" up %d days %d hours"), packet->uptime / 86400, packet->uptime % 86400 / 3600);
+				printf(_("  up %d days %d hours"), packet->uptime / 86400, packet->uptime % 86400 / 3600);
+			}
+			if (packet->softid != NULL) {
+				printf("  %s", packet->softid);
+			}
+			if (packet->ifname != NULL) {
+				printf(" %s", packet->ifname);
 			}
 			putchar('\n');
+		} else if (packet != NULL) {
+			/* Print it */
+			printf("'%s','%s',", ether_ntoa((struct ether_addr *)packet->address), packet->identity);
+			printf("'%s','%s','%s',", packet->platform, packet->version, packet->hardware);
+			printf("'%d','%s','%s'", packet->uptime, packet->softid, packet->ifname);
+			printf(",'%s'", inet_ntop(addr.sin_family, &addr.sin_addr, ipstr, sizeof ipstr));
+			putchar('\n');
+			fflush(stdout);
 		}
 	}
 

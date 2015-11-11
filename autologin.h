@@ -16,23 +16,28 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifndef _USERS_H
-#define _USERS_H 1
+#define AUTOLOGIN_MAXSTR 100
+#define AUTOLOGIN_MAXPROFILES 100
 
-#define MT_CRED_LEN 100
-#define MT_CRED_MAXNUM 128
-
-struct mt_credentials {
-	char username[MT_CRED_LEN];
-	char password[MT_CRED_LEN];
-
-	struct mt_credentials *prev;
-	struct mt_credentials *next;
+struct autologin_profile {
+	char identifier[AUTOLOGIN_MAXSTR];
+	char username[AUTOLOGIN_MAXSTR];
+	char password[AUTOLOGIN_MAXSTR];
+	char inuse:1;
+	char hasUsername:1;
+	char hasPassword:1;
 };
 
-extern struct mt_credentials *mt_users;
+enum autologin_state {
+	ALS_NONE,
+	ALS_PREIDENTIFIER,
+	ALS_IDENTIFIER,
+	ALS_PREKEY,
+	ALS_KEY,
+	ALS_PREVALUE,
+	ALS_VALUE
+};
 
-extern void read_userfile();
-struct mt_credentials* find_user(char *username);
-
-#endif
+extern struct autologin_profile login_profiles[AUTOLOGIN_MAXPROFILES];
+struct autologin_profile *autologin_find_profile(char *identifier);
+int autologin_readfile(char *configfile);

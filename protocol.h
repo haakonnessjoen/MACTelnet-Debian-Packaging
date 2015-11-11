@@ -33,6 +33,8 @@
 #define MT_MNDP_TIMEOUT 5
 #define MT_MNDP_LONGTIMEOUT 120
 
+#define MT_SOFTID_MACTELNET "MAC-Telnet"
+
 #ifndef ETH_ALEN
 #define ETH_ALEN 6
 #endif
@@ -73,7 +75,8 @@ enum mt_mndp_attrtype {
 	MT_MNDPTYPE_PLATFORM  = 0x0008,
 	MT_MNDPTYPE_TIMESTAMP = 0x000a,
 	MT_MNDPTYPE_SOFTID    = 0x000b,
-	MT_MNDPTYPE_HARDWARE  = 0x000c
+	MT_MNDPTYPE_HARDWARE  = 0x000c,
+	MT_MNDPTYPE_IFNAME    = 0x0010
 };
 
 /* MNDP packet header */
@@ -109,6 +112,7 @@ struct mt_mndp_info {
 	char platform[MT_MNDP_MAX_STRING_LENGTH];
 	char hardware[MT_MNDP_MAX_STRING_LENGTH];
 	char softid[MT_MNDP_MAX_STRING_LENGTH];
+	char ifname[MT_MNDP_MAX_STRING_LENGTH];
 	unsigned int uptime;
 };
 
@@ -147,5 +151,28 @@ static const unsigned char mt_mactelnet_clienttype[2] = { 0x00, 0x15 };
 /* Must be initialized by application */
 extern unsigned char mt_direction_fromserver;
 
+/* Debugging stuff */
+#if defined(DEBUG_PROTO)
+#ifndef hexdump_defined
+void hexdump(const char *title, const void *buf, int len)
+{
+    int i;
+    unsigned char *data = (unsigned char *)buf;
+
+    fprintf(stderr, "%s:\n", title);
+    for (i = 0; i < len; i++) {
+        if (!(i & 0xf))
+            fprintf(stderr, "%04x:", i);
+        fprintf(stderr, " %02x", data[i]);
+        if (!(~i & 0xf) || i == len - 1)
+            fprintf(stderr, "\n");
+    }
+}
+#define HEXDUMP(title, buf, len) hexdump(title, buf, len)
+#define hexdump_defined
+#else
+#define HEXDUMP(title, buf, len)
+#endif
+#endif
 
 #endif
