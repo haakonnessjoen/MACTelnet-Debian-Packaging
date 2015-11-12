@@ -1,6 +1,7 @@
 mactelnet (0.4.1-1) unstable; urgency=low
   * Upstream release 0.4.1
-	* Updated changelog with correct date format
+  * Updated old changelog entries with correct date format
+  * Bug fixed upstream (closes: #749658)
 
  -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Thu, 12 Nov 2015 00:57:21 +0200
 
