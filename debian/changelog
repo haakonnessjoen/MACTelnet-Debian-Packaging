@@ -1,17 +1,23 @@
+mactelnet (0.4.1-1) unstable; urgency=low
+  * Upstream release 0.4.1
+	* Updated changelog with correct date format
+
+ -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Thu, 12 Nov 2015 00:57:21 +0200
+
 mactelnet (0.4.0-1) unstable; urgency=low
 
   * Upstream release 0.4.0
   * Updated copyright file with correct license information.
   * Updated copyright file with new format version.
 
- -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Tue, 21 Jul 2012 10:11:12 +0100
+ -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Sat, 21 Jul 2012 10:11:12 +0100
 
 mactelnet (0.3.4-1) unstable; urgency=low
 
   * Upstream release 0.3.4
   * Added librt as dependancy for kfreebsd platform.
 
- -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Tue, 21 Nov 2011 18:44:52 +0100
+ -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Sat, 21 Nov 2011 18:44:52 +0100
 
 mactelnet (0.3.2-2) unstable; urgency=low
 
