@@ -1,3 +1,8 @@
+mactelnet (0.4.2-1) unstable; urgency=low
+  * Upstream release 0.4.2
+
+ -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Mon, 16 Nov 2015 10:46:38 +0200
+
 mactelnet (0.4.1-2) unstable; urgency=low
   * Bug fixed upstream (closes: #749658)
   * Enabled gpg-check in watch file
