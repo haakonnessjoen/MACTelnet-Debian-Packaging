@@ -75,7 +75,7 @@ static int quiet_mode = 0;
 
 static int keepalive_counter = 0;
 
-static unsigned char encryptionkey[128];
+static unsigned char pass_salt[16];
 static char username[255];
 static char password[255];
 static char nonpriv_username[255];
@@ -191,18 +191,21 @@ static void send_auth(char *username, char *password) {
 	char *terminal = getenv("TERM");
 	char md5data[100];
 	unsigned char md5sum[17];
-	int plen;
+	int plen, act_pass_len;
 	md5_state_t state;
 
-	/* Concat string of 0 + password + encryptionkey */
+	/* calculate the actual password's length */
+	act_pass_len = strnlen(password, 82);
+
+	/* Concat string of 0 + password + pass_salt */
 	md5data[0] = 0;
-	strncpy(md5data + 1, password, 82);
-	md5data[83] = '\0';
-	memcpy(md5data + 1 + strlen(password), encryptionkey, 16);
+	memcpy(md5data + 1, password, act_pass_len);
+	/* in case that password is long, calculate only using the used-up parts */
+	memcpy(md5data + 1 + act_pass_len, pass_salt, 16);
 
 	/* Generate md5 sum of md5data with a leading 0 */
 	md5_init(&state);
-	md5_append(&state, (const md5_byte_t *)md5data, strlen(password) + 17);
+	md5_append(&state, (const md5_byte_t *)md5data, 1 + act_pass_len + 16);
 	md5_finish(&state, (md5_byte_t *)md5sum + 1);
 	md5sum[0] = 0;
 
@@ -279,9 +282,9 @@ static int handle_packet(unsigned char *data, int data_len) {
 
 		while (success) {
 
-			/* If we receive encryptionkey, transmit auth data back */
+			/* If we receive pass_salt, transmit auth data back */
 			if (cpkt.cptype == MT_CPTYPE_ENCRYPTIONKEY) {
-				memcpy(encryptionkey, cpkt.data, cpkt.length);
+				memcpy(pass_salt, cpkt.data, 16);
 				send_auth(username, password);
 			}
 
