@@ -16,15 +16,16 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <libintl.h>
 #include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
+#include <config.h>
+#include "gettext.h"
 #include "autologin.h"
-#include "config.h"
+#include "extra.h"
 
 #define _(String) gettext (String)
 
@@ -52,8 +53,9 @@ static char *tilde_to_path(char *path) {
 	if (*path == '~' && (homepath = getenv("HOME"))) {
 		static char newpath[256];
 		memset(newpath, 0, sizeof(newpath));
-		strncpy(newpath, homepath, 255);
-		strncat(newpath, path+1, 255);
+		strncpy(newpath, homepath, sizeof(newpath) - 1);
+		/* strncat is confusing, try not to overflow */
+		strncat(newpath, path+1, sizeof(newpath) - strlen(newpath) - 1);
 		return newpath;
 	}
 	return path;
@@ -63,9 +65,9 @@ int autologin_readfile(char *configfile) {
 	FILE *fp;
 	char c;
 	int i = -1;
-	char *p;
 	char *file_to_read;
 	char key[AUTOLOGIN_MAXSTR];
+	char *p=key;
 	char value[AUTOLOGIN_MAXSTR];
 	int line_counter=1;
 	enum autologin_state state = ALS_NONE;

@@ -16,12 +16,13 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <libintl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <config.h>
+#include "gettext.h"
+#include "extra.h"
 #include "users.h"
-#include "config.h"
 #include "utlist.h"
 
 #define _(String) gettext (String)
@@ -46,6 +47,7 @@ void read_userfile() {
 	while ( fgets(line, sizeof line, file) ) {
 		char *user;
 		char *password;
+		size_t size;
 
 		user = strtok(line, ":");
 		password = strtok(NULL, "\n");
@@ -60,8 +62,11 @@ void read_userfile() {
 			exit(1);
 		}
 
-		memcpy(cred->username, user, strlen(user) < MT_CRED_LEN - 1? strlen(user) : MT_CRED_LEN);
-		memcpy(cred->password, password, strlen(password)  < MT_CRED_LEN - 1? strlen(password)  : MT_CRED_LEN);
+		/* verify that the username & password will be '\0' terminated */
+		memcpy(cred->username, user, size = (strlen(user) < MT_CRED_LEN ? strlen(user) : MT_CRED_LEN - 1));
+		cred->username[size] = '\0';
+		memcpy(cred->password, password, size = (strlen(password) < MT_CRED_LEN ? strlen(password) : MT_CRED_LEN - 1));
+		cred->password[size] = '\0';
 		DL_APPEND(mt_users, cred);
 	}
 	fclose(file);
