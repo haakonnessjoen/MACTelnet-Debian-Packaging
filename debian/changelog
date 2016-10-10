@@ -1,15 +1,25 @@
+mactelnet (0.4.4-1) unstable; urgency=low
+
+  * Upstream release 0.4.4
+  * Includes upstream bugfix of CVE 2016-7115 (closes: #836320)
+
+ -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Mon, 10 Oct 2016 23:34:22 +0200
+
 mactelnet (0.4.2-1) unstable; urgency=low
+
   * Upstream release 0.4.2
 
  -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Mon, 16 Nov 2015 10:46:38 +0200
 
 mactelnet (0.4.1-2) unstable; urgency=low
+
   * Bug fixed upstream (closes: #749658)
   * Enabled gpg-check in watch file
 
  -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Fri, 13 Nov 2015 13:13:44 +0200
 
 mactelnet (0.4.1-1) unstable; urgency=low
+
   * Upstream release 0.4.1
   * Updated changelog with correct date format
 

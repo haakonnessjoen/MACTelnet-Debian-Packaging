@@ -15,11 +15,6 @@ LD=$(DEB_HOST_GNU_TYPE)-ld
 export CC LD
 endif
 
-# librt only needed on kfreebsd
-ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
-	LIBS := -lrt
-endif
-
 export CFLAGS
 export LDFLAGS
 export LIBS
