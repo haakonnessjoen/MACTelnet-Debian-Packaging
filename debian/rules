@@ -6,18 +6,8 @@ DEB_HOST_ARCH_OS := $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
 DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 
-CFLAGS := $(shell dpkg-buildflags --get CFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)
-LDFLAGS := $(shell dpkg-buildflags --get LDFLAGS)
-
-ifneq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
-CC=$(DEB_HOST_GNU_TYPE)-gcc
-LD=$(DEB_HOST_GNU_TYPE)-ld
-export CC LD
-endif
-
-export CFLAGS
-export LDFLAGS
-export LIBS
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/buildflags.mk
 
 %:
 	dh $@ --with autoreconf

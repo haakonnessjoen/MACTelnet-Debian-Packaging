@@ -3,7 +3,7 @@ mactelnet (0.4.4-2) unstable; urgency=low
   * Updated standards version to 3.9.8
   * Added automake/autoconf to build-depends
 
- -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Mon, 10 Oct 2016 23:34:22 +0200
+ -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Tue, 11 Oct 2016 12:23:12 +0200
 
 mactelnet (0.4.4-1) unstable; urgency=low
 
