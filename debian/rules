@@ -20,7 +20,10 @@ export LDFLAGS
 export LIBS
 
 %:
-	dh $@ 
+	dh $@ --with autoreconf
+
+override_dh_autoreconf:
+	dh_autoreconf --as-needed
 
 override_dh_fixperms:
 	dh_fixperms --exclude mactelnetd.users

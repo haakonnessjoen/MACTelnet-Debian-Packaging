@@ -2,8 +2,8 @@ Source: mactelnet
 Section: net
 Priority: extra
 Maintainer: Håkon Nessjøen <haakon.nessjoen@gmail.com>
-Build-Depends: debhelper (>= 8.1.2~)
-Standards-Version: 3.9.6
+Build-Depends: debhelper (>= 8.1.2~), autoconf (>= 2.68~), automake (>= 1.1), dh-autoreconf (>= 10)
+Standards-Version: 3.9.8
 Homepage: https://github.com/haakonnessjoen/MAC-Telnet/downloads
 Vcs-Git: git://github.com/haakonnessjoen/MACTelnet-Debian-Packaging.git
 Vcs-Browser: https://github.com/haakonnessjoen/MACTelnet-Debian-Packaging
