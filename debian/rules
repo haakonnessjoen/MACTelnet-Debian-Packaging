@@ -24,6 +24,8 @@ export LIBS
 
 override_dh_autoreconf:
 	dh_autoreconf --as-needed
+	# Make gettext regenerate .gmo files
+	rm po/stamp-po
 
 override_dh_fixperms:
 	dh_fixperms --exclude mactelnetd.users
