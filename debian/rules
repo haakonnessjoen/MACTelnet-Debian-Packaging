@@ -24,6 +24,8 @@ export LIBS
 
 override_dh_autoreconf:
 	dh_autoreconf --as-needed
+	# I am sorry, but the defaults in AM_GNU_GETTEXT makes me have to do this
+	cp po/mactelnet.pot src/
 
 override_dh_fixperms:
 	dh_fixperms --exclude mactelnetd.users
