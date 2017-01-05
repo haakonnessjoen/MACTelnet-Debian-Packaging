@@ -1,4 +1,4 @@
-mactelnet (0.4.0-2) stable; urgency=low
+mactelnet (0.4.0-1+deb8u1) stable; urgency=low
 
   * Backported bugfix of CVE 2016-7115 (closes: 836320)
 
