@@ -2,7 +2,7 @@ mactelnet (0.4.0-1+deb8u1) stable; urgency=low
 
   * Backported bugfix of CVE 2016-7115 (closes: 836320)
 
- -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Sun, 10 Sep 2016 23:11:32 +0200
+ -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Sat, 10 Sep 2016 23:11:32 +0200
 
 mactelnet (0.4.0-1) unstable; urgency=low
 
