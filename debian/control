@@ -1,6 +1,6 @@
 Source: mactelnet
 Section: net
-Priority: extra
+Priority: optional
 Maintainer: Håkon Nessjøen <haakon.nessjoen@gmail.com>
 Build-Depends: debhelper-compat (= 12), autoconf (>= 2.68~), automake (>= 1.1), dh-autoreconf (>= 10)
 Standards-Version: 3.9.8
