@@ -7,6 +7,7 @@ mactelnet (0.4.4-5) UNRELEASED; urgency=medium
   * Set upstream metadata fields: Bug-Database, Bug-Submit, Repository,
     Repository-Browse.
   * Drop unnecessary dependency on dh-autoreconf.
+  * Rely on pre-initialized dpkg-architecture variables.
 
  -- Debian Janitor <janitor@jelmer.uk>  Tue, 28 Apr 2020 20:46:35 +0000
 
