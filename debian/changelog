@@ -1,3 +1,9 @@
+mactelnet (0.4.4-5) UNRELEASED; urgency=medium
+
+  * Use secure copyright file specification URI.
+
+ -- Debian Janitor <janitor@jelmer.uk>  Tue, 28 Apr 2020 20:46:35 +0000
+
 mactelnet (0.4.4-4) unstable; urgency=low
 
   * Updated debhelper build-depends version, to reflect compat level.
