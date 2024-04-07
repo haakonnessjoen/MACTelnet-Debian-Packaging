@@ -1,3 +1,17 @@
+mactelnet (0.4.4-5) UNRELEASED; urgency=medium
+
+  * Use secure copyright file specification URI.
+  * Bump debhelper from deprecated 9 to 12.
+  * Set debhelper-compat version in Build-Depends.
+  * Change priority extra to priority optional.
+  * Set upstream metadata fields: Bug-Database, Bug-Submit, Repository,
+    Repository-Browse.
+  * Drop unnecessary dependency on dh-autoreconf.
+  * Rely on pre-initialized dpkg-architecture variables.
+  * Fix day-of-week for changelog entries 0.3.4-1, 0.3.2-2.
+
+ -- Debian Janitor <janitor@jelmer.uk>  Tue, 28 Apr 2020 20:46:35 +0000
+
 mactelnet (0.4.4-4) unstable; urgency=low
 
   * Updated debhelper build-depends version, to reflect compat level.
@@ -59,13 +73,13 @@ mactelnet (0.3.4-1) unstable; urgency=low
   * Upstream release 0.3.4
   * Added librt as dependancy for kfreebsd platform.
 
- -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Sat, 21 Nov 2011 18:44:52 +0100
+ -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Mon, 21 Nov 2011 18:44:52 +0100
 
 mactelnet (0.3.2-2) unstable; urgency=low
 
   * Fixed a problem where the init script was unable to stop mactelnet-server.
 
- -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Tue, 10 Nov 2011 20:41:03 +0100
+ -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Thu, 10 Nov 2011 20:41:03 +0100
 
 mactelnet (0.3.2-1) unstable; urgency=low
 
