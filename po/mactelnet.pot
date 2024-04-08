@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Håkon Nessjøen
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the mactelnet package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: mactelnet 0.4.4\n"
+"Project-Id-Version: mactelnet 0.5.0\n"
 "Report-Msgid-Bugs-To: haakon.nessjoen@gmail.com\n"
-"POT-Creation-Date: 2016-10-10 23:18+0200\n"
+"POT-Creation-Date: 2024-04-08 01:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,63 +17,73 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/mactelnet.c:122
+#: src/mactelnet.c:130
 #, c-format
 msgid ""
 "Failed dropping privileges. The user %s is not a valid username on local "
 "system.\n"
 msgstr ""
 
-#: src/mactelnet.c:128
+#: src/mactelnet.c:137
 #, c-format
 msgid "setgid: Error dropping group privileges\n"
 msgstr ""
 
-#: src/mactelnet.c:132
+#: src/mactelnet.c:141
 #, c-format
 msgid "setuid: Error dropping user privileges\n"
 msgstr ""
 
-#: src/mactelnet.c:137
+#: src/mactelnet.c:146
 #, c-format
 msgid "Failed to drop privileges\n"
 msgstr ""
 
-#: src/mactelnet.c:203
+#: src/mactelnet.c:214
 #, c-format
 msgid ""
 "\n"
 "Connection timed out\n"
 msgstr ""
 
-#: src/mactelnet.c:321
+#: src/mactelnet.c:250
 #, c-format
-msgid "Invalid salt length: %d (instead of 16) received from server %s\n"
+msgid "Error: md5 digest not found\n"
 msgstr ""
 
-#: src/mactelnet.c:368
+#: src/mactelnet.c:255
+#, c-format
+msgid "Error initializing md5 context\n"
+msgstr ""
+
+#: src/mactelnet.c:371
+#, c-format
+msgid "Invalid salt length: %d (instead of 16 or 49) received from server %s\n"
+msgstr ""
+
+#: src/mactelnet.c:418
 #, c-format
 msgid "Connection closed.\n"
 msgstr ""
 
-#: src/mactelnet.c:374
+#: src/mactelnet.c:424
 #, c-format
 msgid "Unhandeled packet type: %d received from server %s\n"
 msgstr ""
 
-#: src/mactelnet.c:397
+#: src/mactelnet.c:445
 #, c-format
 msgid "Error: No suitable devices found\n"
 msgstr ""
 
-#: src/mactelnet.c:557
+#: src/mactelnet.c:609
 #, c-format
 msgid ""
-"Usage: %s <MAC|identity> [-h] [-n] [-a <path>] [-A] [-t <timeout>] [-u "
-"<user>] [-p <password>] [-U <user>] | -l [-B] [-t <timeout>]\n"
+"Usage: %s <MAC|identity> [-nqoA] [-a <path>] [-t <timeout>] [-u <user>] [-p "
+"<password>] [-U <user>] | -l [-B] [-t <timeout>]\n"
 msgstr ""
 
-#: src/mactelnet.c:560
+#: src/mactelnet.c:615
 #, c-format
 msgid ""
 "\n"
@@ -98,213 +108,245 @@ msgid ""
 "  -U <user>      Drop privileges to this user. Used in conjunction with -n\n"
 "                 for security.\n"
 "  -q             Quiet mode.\n"
+"  -o             Force old MD5 authentication algorithm.\n"
 "  -h             This help.\n"
 "\n"
 msgstr ""
 
-#: src/mactelnet.c:593
+#: src/mactelnet.c:650
 #, c-format
 msgid "Using autologin credentials from %s\n"
 msgstr ""
 
-#: src/mactelnet.c:617
+#: src/mactelnet.c:674
 #, c-format
 msgid "You need to have root privileges to use the -n parameter.\n"
 msgstr ""
 
-#: src/mactelnet.c:627
+#: src/mactelnet.c:684
 #, c-format
 msgid "The -U option must be used in conjunction with the -n parameter.\n"
 msgstr ""
 
-#: src/mactelnet.c:656
+#: src/mactelnet.c:713
 #, c-format
 msgid "Login: "
 msgstr ""
 
-#: src/mactelnet.c:664
+#: src/mactelnet.c:721
 msgid "Password: "
 msgstr ""
 
-#: src/mactelnet.c:692
+#: src/mactelnet.c:752
 #, c-format
 msgid "Connecting to %s..."
 msgstr ""
 
-#: src/mactelnet.c:702 src/mactelnetd.c:242 src/mactelnetd.c:1043
+#: src/mactelnet.c:762 src/mactelnetd.c:253 src/mactelnetd.c:1155
 #, c-format
 msgid "Error binding to %s:%d, %s\n"
 msgstr ""
 
-#: src/mactelnet.c:707
+#: src/mactelnet.c:767
 #, c-format
 msgid "Connection failed.\n"
 msgstr ""
 
-#: src/mactelnet.c:711
+#: src/mactelnet.c:771
 #, c-format
 msgid "done\n"
 msgstr ""
 
-#: src/mactelnetd.c:247
+#: src/mactelnetd.c:255
 #, c-format
-msgid "Listening on %s for %s\n"
+msgid "Error binding to %s:%d on %s\n"
 msgstr ""
 
-#: src/mactelnetd.c:451
+#: src/mactelnetd.c:259
+#, c-format
+msgid "Using %s to transmit packets from %s\n"
+msgstr ""
+
+#: src/mactelnetd.c:464
 #, c-format
 msgid "(%d) Invalid login by %s."
 msgstr ""
 
-#: src/mactelnetd.c:454
+#: src/mactelnetd.c:467
 msgid "Login failed, incorrect username or password\r\n"
 msgstr ""
 
-#: src/mactelnetd.c:471
+#: src/mactelnetd.c:484
 msgid "Terminal error\r\n"
 msgstr ""
 
-#: src/mactelnetd.c:485
+#: src/mactelnetd.c:498 src/mactelnetd.c:506
 #, c-format
 msgid "(%d) Error allocating memory."
 msgstr ""
 
-#: src/mactelnetd.c:487
+#: src/mactelnetd.c:500 src/mactelnetd.c:508
 msgid "System error, out of memory\r\n"
 msgstr ""
 
-#: src/mactelnetd.c:492
+#: src/mactelnetd.c:513
 #, c-format
 msgid "(%d) Login ok, but local user not accessible (%s)."
 msgstr ""
 
-#: src/mactelnetd.c:494
+#: src/mactelnetd.c:516
 msgid "Local user not accessible\r\n"
 msgstr ""
 
-#: src/mactelnetd.c:505
+#: src/mactelnetd.c:527
 #, c-format
 msgid "Error opening %s: %s"
 msgstr ""
 
-#: src/mactelnetd.c:507
+#: src/mactelnetd.c:529
 msgid "Error opening terminal\r\n"
 msgstr ""
 
-#: src/mactelnetd.c:518
+#: src/mactelnetd.c:540
 #, c-format
 msgid "(%d) User %s logged in."
 msgstr ""
 
-#: src/mactelnetd.c:553
+#: src/mactelnetd.c:575
 #, c-format
 msgid "(%d) Could not log in %s (%d:%d): setuid/setgid: %s"
 msgstr ""
 
-#: src/mactelnetd.c:555
+#: src/mactelnetd.c:578
 msgid "Internal error\r\n"
 msgstr ""
 
-#: src/mactelnetd.c:561
+#: src/mactelnetd.c:584
 #, c-format
 msgid "(%d) User %s disconnected with "
 msgstr ""
 
-#: src/mactelnetd.c:660
+#: src/mactelnetd.c:710
+#, c-format
+msgid "(%d) Invalid mtwei key by %s."
+msgstr ""
+
+#: src/mactelnetd.c:733
 #, c-format
 msgid "(%d) Unhandeled control packet type: %d, length: %d"
 msgstr ""
 
-#: src/mactelnetd.c:717
+#: src/mactelnetd.c:737
+#, c-format
+msgid "(%d) Unhandeled control packet type: %d, in state: %d, length: %d"
+msgstr ""
+
+#: src/mactelnetd.c:793
 #, c-format
 msgid "(%d) New connection from %s."
 msgstr ""
 
-#: src/mactelnetd.c:745 src/mactelnetd.c:1175
+#: src/mactelnetd.c:822 src/mactelnetd.c:1289
 #, c-format
 msgid "(%d) Connection closed."
 msgstr ""
 
-#: src/mactelnetd.c:798
+#: src/mactelnetd.c:877
 #, c-format
 msgid "(%d) Unhandeled packet type: %d"
 msgstr ""
 
-#: src/mactelnetd.c:873
+#: src/mactelnetd.c:952
+msgid "Was not able to send any MNDP packets"
+msgstr ""
+
+#: src/mactelnetd.c:961
 msgid ""
 "\r\n"
 "\r\n"
 "Daemon shutting down.\r\n"
 msgstr ""
 
-#: src/mactelnetd.c:875
+#: src/mactelnetd.c:963
 msgid "Daemon shutting down"
 msgstr ""
 
-#: src/mactelnetd.c:908
+#: src/mactelnetd.c:996
 msgid "SIGHUP: Reloading interfaces"
 msgstr ""
 
-#: src/mactelnetd.c:921
+#: src/mactelnetd.c:1009
 msgid "No devices found! Exiting.\n"
 msgstr ""
 
-#: src/mactelnetd.c:935
+#: src/mactelnetd.c:1022
 #, c-format
 msgid "(%d) Connection closed because interface %s is gone."
 msgstr ""
 
-#: src/mactelnetd.c:989
+#: src/mactelnetd.c:1082
 #, c-format
-msgid "Usage: %s [-f|-n|-h]\n"
+msgid "Usage: %s [-fnoh]\n"
 msgstr ""
 
-#: src/mactelnetd.c:992
+#: src/mactelnetd.c:1087
 #, c-format
 msgid ""
 "\n"
 "Parameters:\n"
 "  -f        Run process in foreground.\n"
 "  -n        Do not use broadcast packets. Just a tad less insecure.\n"
+"  -o        Use MD5 for password hashing.\n"
 "  -h        This help.\n"
 "\n"
 msgstr ""
 
-#: src/mactelnetd.c:1002 src/macping.c:190
+#: src/mactelnetd.c:1096
+#, c-format
+msgid ""
+"\n"
+"Parameters:\n"
+"  -n        Do not use broadcast packets. Just a tad less insecure.\n"
+"  -o        Use MD5 for password hashing.\n"
+"  -h        This help.\n"
+"\n"
+msgstr ""
+
+#: src/mactelnetd.c:1107 src/macping.c:189
 #, c-format
 msgid "You need to have root privileges to use %s.\n"
 msgstr ""
 
-#: src/mactelnetd.c:1065
+#: src/mactelnetd.c:1177
 #, c-format
 msgid "MNDP: Error binding to %s:%d, %s\n"
 msgstr ""
 
-#: src/mactelnetd.c:1069
+#: src/mactelnetd.c:1182
 #, c-format
 msgid "Bound to %s:%d"
 msgstr ""
 
-#: src/mactelnetd.c:1095
+#: src/mactelnetd.c:1210
 msgid "Unable to find any valid network interfaces\n"
 msgstr ""
 
-#: src/mactelnetd.c:1173
+#: src/mactelnetd.c:1287
 #, c-format
 msgid "(%d) Connection to user %s closed."
 msgstr ""
 
-#: src/mactelnetd.c:1183
+#: src/mactelnetd.c:1295
 #, c-format
 msgid "(%d) Waiting for ack\n"
 msgstr ""
 
-#: src/mactelnetd.c:1199
+#: src/mactelnetd.c:1311
 #, c-format
 msgid "(%d) Session timed out"
 msgstr ""
 
-#: src/mactelnetd.c:1202
+#: src/mactelnetd.c:1314
 msgid "Timeout\r\n"
 msgstr ""
 
@@ -313,23 +355,23 @@ msgstr ""
 msgid "%d packets transmitted, %d packets received, %d%% packet loss\n"
 msgstr ""
 
-#: src/macping.c:101
+#: src/macping.c:102
 #, c-format
 msgid "round-trip min/avg/max = %.2f/%.2f/%.2f ms\n"
 msgstr ""
 
-#: src/macping.c:160
+#: src/macping.c:159
 #, c-format
 msgid ""
 "Number of packets to send must be more than 0 and up to 100 in fast mode.\n"
 msgstr ""
 
-#: src/macping.c:166
+#: src/macping.c:165
 #, c-format
 msgid "Usage: %s <MAC> [-h] [-f] [-c <count>] [-s <packet size>]\n"
 msgstr ""
 
-#: src/macping.c:169
+#: src/macping.c:168
 #, c-format
 msgid ""
 "\n"
@@ -342,12 +384,12 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/macping.c:181
+#: src/macping.c:180
 #, c-format
 msgid "Packet size must be between 18 and %d\n"
 msgstr ""
 
-#: src/macping.c:218 src/mndp.c:86 src/protocol.c:443
+#: src/macping.c:218 src/mndp.c:88 src/protocol.c:444
 #, c-format
 msgid "Error binding to %s:%d\n"
 msgstr ""
@@ -367,99 +409,99 @@ msgstr ""
 msgid "%s %d byte, ping time %.2f ms%s\n"
 msgstr ""
 
-#: src/macping.c:334
+#: src/macping.c:336
 #, c-format
 msgid "%s Reply of %d bytes of unequal data\n"
 msgstr ""
 
-#: src/mndp.c:91
+#: src/mndp.c:93
 #, c-format
 msgid "Searching for MikroTik routers... Abort with CTRL+C.\n"
 msgstr ""
 
-#: src/mndp.c:95
+#: src/mndp.c:97
 #, c-format
 msgid "Unable to send broadcast packets: Operating in receive only mode.\n"
 msgstr ""
 
-#: src/mndp.c:105
+#: src/mndp.c:107
 #, c-format
 msgid "Unable to send broadcast packet: Operating in receive only mode.\n"
 msgstr ""
 
-#: src/mndp.c:112
+#: src/mndp.c:114
 msgid "IP"
 msgstr ""
 
-#: src/mndp.c:112
+#: src/mndp.c:114
 msgid "MAC-Address"
 msgstr ""
 
-#: src/mndp.c:112
+#: src/mndp.c:115
 msgid "Identity (platform version hardware) uptime"
 msgstr ""
 
-#: src/mndp.c:131
+#: src/mndp.c:134
 #, c-format
-msgid "An error occured. aborting\n"
+msgid "An error occurred. aborting\n"
 msgstr ""
 
-#: src/mndp.c:147
+#: src/mndp.c:149
 #, c-format
 msgid "  up %d days %d hours"
 msgstr ""
 
-#: src/autologin.c:85
+#: src/autologin.c:87
 #, c-format
 msgid "Error opening autologin file %s: %s\n"
 msgstr ""
 
-#: src/autologin.c:134
+#: src/autologin.c:137
 #, c-format
 msgid "Error on line %d in %s: New line in middle of identifier\n"
 msgstr ""
 
-#: src/autologin.c:141
+#: src/autologin.c:145
 #, c-format
 msgid "Error on line %d in %s: Identifier string too long.\n"
 msgstr ""
 
-#: src/autologin.c:162
+#: src/autologin.c:169
 #, c-format
 msgid "Error on line %d in %s: Newline before '=' character\n"
 msgstr ""
 
-#: src/autologin.c:169
+#: src/autologin.c:177
 #, c-format
 msgid "Error on line %d in %s: Key string too long.\n"
 msgstr ""
 
-#: src/autologin.c:189
+#: src/autologin.c:199
 #, c-format
 msgid "Warning on line %d of %s: Unknown parameter %s, ignoring.\n"
 msgstr ""
 
-#: src/autologin.c:200
+#: src/autologin.c:211
 #, c-format
 msgid "Error on line %d in %s: Value string too long.\n"
 msgstr ""
 
-#: src/interfaces.c:314
+#: src/interfaces.c:341
 #, c-format
 msgid "packet size too large\n"
 msgstr ""
 
-#: src/protocol.c:91 src/protocol.c:156
+#: src/protocol.c:93 src/protocol.c:158
 #, c-format
 msgid "add_control_packet: ERROR, too large packet. Exceeds %d bytes\n"
 msgstr ""
 
-#: src/protocol.c:279
+#: src/protocol.c:280
 #, c-format
 msgid "mndp_add_attribute: ERROR, too large packet. Exceeds %d bytes\n"
 msgstr ""
 
-#: src/protocol.c:458
+#: src/protocol.c:459
 #, c-format
 msgid "Unable to send broadcast packet: Router lookup will be slow\n"
 msgstr ""

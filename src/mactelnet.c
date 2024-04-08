@@ -1,22 +1,23 @@
 /*
-    Mac-Telnet - Connect to RouterOS or mactelnetd devices via MAC address
-    Copyright (C) 2010, Håkon Nessjøen <haakon.nessjoen@gmail.com>
+	Mac-Telnet - Connect to RouterOS or mactelnetd devices via MAC address
+	Copyright (C) 2010, Håkon Nessjøen <haakon.nessjoen@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+	This program is free software; you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation; either version 2 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along
-    with this program; if not, write to the Free Software Foundation, Inc.,
-    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+	You should have received a copy of the GNU General Public License along
+	with this program; if not, write to the Free Software Foundation, Inc.,
+	51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#define _BSD_SOURCE
+#define _DEFAULT_SOURCE
+#include <libintl.h>
 #include <locale.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -26,8 +27,8 @@
 #include <fcntl.h>
 #include <signal.h>
 #if defined(__APPLE__)
-# include <libkern/OSByteOrder.h>
-# define htole16 OSSwapHostToLittleInt16
+#include <libkern/OSByteOrder.h>
+#define htole16 OSSwapHostToLittleInt16
 #elif defined(__FreeBSD__)
 #include <sys/endian.h>
 #else
@@ -51,8 +52,9 @@
 #include <sys/mman.h>
 #endif
 #include <config.h>
-#include "gettext.h"
-#include "md5.h"
+
+#include <openssl/evp.h>
+#include "mtwei.h"
 #include "protocol.h"
 #include "console.h"
 #include "extra.h"
@@ -64,7 +66,7 @@
 
 #define PROGRAM_NAME "MAC-Telnet"
 
-#define _(String) gettext (String)
+#define _(STRING) gettext(STRING)
 
 static int sockfd = 0;
 static int insockfd;
@@ -72,6 +74,11 @@ static int insockfd;
 static unsigned int outcounter = 0;
 static long incounter = -1;
 static int sessionkey = 0;
+static mtwei_state_t mtwei;
+BIGNUM *private_key;
+static uint8_t public_key[MTWEI_PUBKEY_LEN];
+static uint8_t server_key[MTWEI_PUBKEY_LEN];
+static enum auth_mode_t auth_mode = AUTH_MODE_MD5;
 static int running = 1;
 
 static unsigned char use_raw_socket = 0;
@@ -80,7 +87,7 @@ static unsigned char terminal_mode = 0;
 static unsigned char srcmac[ETH_ALEN];
 static unsigned char dstmac[ETH_ALEN];
 
-static struct in_addr sourceip; 
+static struct in_addr sourceip;
 static struct in_addr destip;
 static int sourceport;
 
@@ -90,6 +97,7 @@ static int mndp_timeout = 0;
 
 static int is_a_tty = 1;
 static int quiet_mode = 0;
+static int force_md5 = 0;
 static int batch_mode = 0;
 static int no_autologin = 0;
 
@@ -102,7 +110,7 @@ static char username[MT_MNDP_MAX_STRING_SIZE];
 static char password[MT_MNDP_MAX_STRING_SIZE];
 static char nonpriv_username[MT_MNDP_MAX_STRING_SIZE];
 
-struct net_interface *interfaces=NULL;
+struct net_interface *interfaces = NULL;
 struct net_interface *active_interface;
 
 /* Protocol data direction */
@@ -117,9 +125,10 @@ static void print_version() {
 }
 
 void drop_privileges(char *username) {
-	struct passwd *user = (struct passwd *) getpwnam(username);
+	struct passwd *user = (struct passwd *)getpwnam(username);
 	if (user == NULL) {
-		fprintf(stderr, _("Failed dropping privileges. The user %s is not a valid username on local system.\n"), username);
+		fprintf(stderr, _("Failed dropping privileges. The user %s is not a valid username on local system.\n"),
+				username);
 		exit(1);
 	}
 	if (getuid() == 0) {
@@ -153,12 +162,14 @@ static int send_udp(struct mt_packet *packet, int retransmit) {
 		socket_address.sin_port = htons(MT_MACTELNET_PORT);
 		socket_address.sin_addr.s_addr = htonl(INADDR_BROADCAST);
 
-		sent_bytes = sendto(send_socket, packet->data, packet->size, 0, (struct sockaddr*)&socket_address, sizeof(socket_address));
+		sent_bytes = sendto(send_socket, packet->data, packet->size, 0, (struct sockaddr *)&socket_address,
+							sizeof(socket_address));
 	} else {
-		sent_bytes = net_send_udp(sockfd, active_interface, srcmac, dstmac, &sourceip,  sourceport, &destip, MT_MACTELNET_PORT, packet->data, packet->size);
+		sent_bytes = net_send_udp(sockfd, active_interface, srcmac, dstmac, &sourceip, sourceport, &destip,
+								  MT_MACTELNET_PORT, packet->data, packet->size);
 	}
 
-	/* 
+	/*
 	 * Retransmit packet if no data is received within
 	 * retransmit_intervals milliseconds.
 	 */
@@ -206,48 +217,79 @@ static int send_udp(struct mt_packet *packet, int retransmit) {
 	return sent_bytes;
 }
 
-static void send_auth(char *username, char *password) {
+static void send_auth(char *login, char *password) {
 	struct mt_packet data;
 	unsigned short width = 0;
 	unsigned short height = 0;
 	char *terminal = getenv("TERM");
-	char md5data[100];
-	unsigned char md5sum[17];
+	char hashdata[100];
+	unsigned char hashsum[32], pubkey[33];
 	int plen, act_pass_len;
-	md5_state_t state;
+	EVP_MD_CTX *context;
+	const EVP_MD *md;
+	unsigned int md_len;
 
-#if defined(__linux__) && defined(_POSIX_MEMLOCK_RANGE)
-	mlock(md5data, sizeof(md5data));
-	mlock(md5sum, sizeof(md5data));
+#if defined(_POSIX_MEMLOCK_RANGE) && _POSIX_MEMLOCK_RANGE > 0
+	mlock(hashdata, sizeof(hashdata));
+	mlock(hashsum, sizeof(hashdata));
 #endif
 
 	/* calculate the actual password's length */
 	act_pass_len = strnlen(password, 82);
 
-	/* Concat string of 0 + password + pass_salt */
-	md5data[0] = 0;
-	memcpy(md5data + 1, password, act_pass_len);
-	/* in case that password is long, calculate only using the used-up parts */
-	memcpy(md5data + 1 + act_pass_len, pass_salt, 16);
+	if (force_md5 == 1 || auth_mode == AUTH_MODE_MD5) {
+		/* Concat string of 0 + password + pass_salt */
+		hashdata[0] = 0;
+		memcpy(hashdata + 1, password, act_pass_len);
+		/* in case that password is long, calculate only using the used-up parts */
+		memcpy(hashdata + 1 + act_pass_len, pass_salt, 16);
 
-	/* Generate md5 sum of md5data with a leading 0 */
-	md5_init(&state);
-	md5_append(&state, (const md5_byte_t *)md5data, 1 + act_pass_len + 16);
-	md5_finish(&state, (md5_byte_t *)md5sum + 1);
-	md5sum[0] = 0;
+		/* Generate md5 sum of md5data with a leading 0 */
+		md = EVP_get_digestbyname("md5");
+		if (md == NULL) {
+			fprintf(stderr, _("Error: md5 digest not found\n"));
+			abort();
+		}
+		context = EVP_MD_CTX_new();
+		if (context == NULL) {
+			fprintf(stderr, _("Error initializing md5 context\n"));
+			abort();
+		}
+		EVP_DigestInit_ex(context, md, NULL);
+		EVP_DigestUpdate(context, hashdata, 1 + act_pass_len + 16);
+		EVP_DigestFinal_ex(context, hashsum + 1, &md_len);
+		EVP_MD_CTX_free(context);
+		hashsum[0] = 0;
+	} else {
+		/* Discard console parameters that may be present on login to generate crypto stuff */
+		char *username, *str;
+
+		str = username = (char *)malloc(MT_MNDP_MAX_STRING_SIZE);
+		strncpy(username, login, MT_MNDP_MAX_STRING_SIZE);
+		username = strsep(&username, "+");
+
+		mtwei_id(username, password, pass_salt, (uint8_t *)hashdata);
+		mtwei_docrypto(&mtwei, private_key, server_key, public_key, (uint8_t *)hashdata, hashsum);
+
+		free(str);
+	}
 
 	/* Send combined packet to server */
 	init_packet(&data, MT_PTYPE_DATA, srcmac, dstmac, sessionkey, outcounter);
-	plen = add_control_packet(&data, MT_CPTYPE_PASSWORD, md5sum, 17);
-	plen += add_control_packet(&data, MT_CPTYPE_USERNAME, username, strlen(username));
+	plen = add_control_packet(&data, MT_CPTYPE_PASSWORD, hashsum, auth_mode == AUTH_MODE_MD5 ? 17 : 32);
+	plen += add_control_packet(&data, MT_CPTYPE_USERNAME, login, strlen(login));
 	plen += add_control_packet(&data, MT_CPTYPE_TERM_TYPE, terminal, strlen(terminal));
-	
+
 	if (is_a_tty && get_terminal_size(&width, &height) != -1) {
 		width = htole16(width);
 		height = htole16(height);
-		plen += add_control_packet(&data, MT_CPTYPE_TERM_WIDTH, &width, 2);
-		plen += add_control_packet(&data, MT_CPTYPE_TERM_HEIGHT, &height, 2);
+	} else {
+		width = 0;
+		height = 0;
 	}
+
+	plen += add_control_packet(&data, MT_CPTYPE_TERM_WIDTH, &width, 2);
+	plen += add_control_packet(&data, MT_CPTYPE_TERM_HEIGHT, &height, 2);
 
 	outcounter += plen;
 
@@ -256,7 +298,7 @@ static void send_auth(char *username, char *password) {
 }
 
 static void sig_winch(int sig) {
-	unsigned short width,height;
+	unsigned short width, height;
 	struct mt_packet data;
 	int plen;
 
@@ -280,7 +322,7 @@ static int handle_packet(unsigned char *data, int data_len) {
 	struct mt_mactelnet_hdr pkthdr;
 
 	/* Minimal size checks (pings are not supported here) */
-	if (data_len < MT_HEADER_LEN){
+	if (data_len < MT_HEADER_LEN) {
 		return -1;
 	}
 	parse_packet(data, &pkthdr);
@@ -313,15 +355,25 @@ static int handle_packet(unsigned char *data, int data_len) {
 		success = parse_control_packet(data + MT_HEADER_LEN, data_len - MT_HEADER_LEN, &cpkt);
 
 		while (success) {
-
 			/* If we receive pass_salt, transmit auth data back */
 			if (cpkt.cptype == MT_CPTYPE_PASSSALT) {
-				/* check validity, server sends exactly 16 bytes */
-				if (cpkt.length != 16) {
-					fprintf(stderr, _("Invalid salt length: %d (instead of 16) received from server %s\n"), cpkt.length, ether_ntoa((struct ether_addr *)dstmac));
+				/* check validity, server sends exactly 49 (or 16 for legacy auth) bytes */
+				if (cpkt.length == sizeof(pass_salt)) {
+					auth_mode = AUTH_MODE_MD5;
+					memcpy(pass_salt, cpkt.data, sizeof(pass_salt));
+					send_auth(username, password);
+				} else if (cpkt.length == sizeof(pass_salt) + sizeof(server_key)) {
+					auth_mode = AUTH_MODE_EC_SRP;
+					memcpy(server_key, cpkt.data, sizeof(server_key));
+					memcpy(pass_salt, cpkt.data + sizeof(server_key), sizeof(pass_salt));
+					send_auth(username, password);
+				} else {
+					fprintf(stderr, _("Invalid salt length: %d (instead of 16 or 49) received from server %s\n"),
+							cpkt.length, ether_ntoa((struct ether_addr *)dstmac));
+					/* Exit, server returned invalid data */
+					running = 0;
+					break;
 				}
-				memcpy(pass_salt, cpkt.data, 16);
-				send_auth(username, password);
 			}
 
 			/* If the (remaining) data did not have a control-packet magic byte sequence,
@@ -333,7 +385,6 @@ static int handle_packet(unsigned char *data, int data_len) {
 			/* END_AUTH means that the user/password negotiation is done, and after this point
 			   terminal data may arrive, so we set up the terminal to raw mode. */
 			else if (cpkt.cptype == MT_CPTYPE_END_AUTH) {
-
 				/* we have entered "terminal mode" */
 				terminal_mode = 1;
 
@@ -341,7 +392,7 @@ static int handle_packet(unsigned char *data, int data_len) {
 					/* stop input buffering at all levels. Give full control of terminal to RouterOS */
 					raw_term();
 
-					setvbuf(stdin,  (char*)NULL, _IONBF, 0);
+					setvbuf(stdin, (char *)NULL, _IONBF, 0);
 
 					/* Add resize signal handler */
 					signal(SIGWINCH, sig_winch);
@@ -351,8 +402,7 @@ static int handle_packet(unsigned char *data, int data_len) {
 			/* Parse next controlpacket */
 			success = parse_control_packet(NULL, 0, &cpkt);
 		}
-	}
-	else if (pkthdr.ptype == MT_PTYPE_ACK) {
+	} else if (pkthdr.ptype == MT_PTYPE_ACK) {
 		/* Handled elsewhere */
 	}
 
@@ -371,7 +421,8 @@ static int handle_packet(unsigned char *data, int data_len) {
 		/* exit */
 		running = 0;
 	} else {
-		fprintf(stderr, _("Unhandeled packet type: %d received from server %s\n"), pkthdr.ptype, ether_ntoa((struct ether_addr *)dstmac));
+		fprintf(stderr, _("Unhandeled packet type: %d received from server %s\n"), pkthdr.ptype,
+				ether_ntoa((struct ether_addr *)dstmac));
 		return -1;
 	}
 
@@ -387,9 +438,6 @@ static int find_interface() {
 	struct timeval timeout;
 	int optval = 1;
 	struct net_interface *interface;
-
-	/* TODO: reread interfaces on HUP */
-	//bzero(&interfaces, sizeof(struct net_interface) * MAX_INTERFACES);
 
 	bzero(emptymac, ETH_ALEN);
 
@@ -456,13 +504,14 @@ static int find_interface() {
 /*
  * TODO: Rewrite main() when all sub-functionality is tested
  */
-int main (int argc, char **argv) {
+int main(int argc, char **argv) {
 	int result;
 	struct mt_packet data;
 	struct sockaddr_in si_me;
 	struct autologin_profile *login_profile;
 	struct net_interface *interface, *tmp;
 	unsigned char buff[MT_PACKET_LEN];
+	unsigned char loginkey[512];
 	unsigned char print_help = 0, have_username = 0, have_password = 0;
 	unsigned char drop_priv = 0;
 	int c;
@@ -475,14 +524,13 @@ int main (int argc, char **argv) {
 	textdomain(PACKAGE);
 
 	while (1) {
-		c = getopt(argc, argv, "lnqt:u:p:U:vh?BAa:");
+		c = getopt(argc, argv, "lnqot:u:p:U:vh?BAa:");
 
 		if (c == -1) {
 			break;
 		}
 
 		switch (c) {
-
 			case 'n':
 				use_raw_socket = 1;
 				break;
@@ -496,7 +544,7 @@ int main (int argc, char **argv) {
 
 			case 'p':
 				/* Save password */
-#if defined(__linux__) && defined(_POSIX_MEMLOCK_RANGE)
+#if defined(_POSIX_MEMLOCK_RANGE) && _POSIX_MEMLOCK_RANGE > 0
 				mlock(password, sizeof(password));
 #endif
 				strncpy(password, optarg, sizeof(password) - 1);
@@ -525,6 +573,10 @@ int main (int argc, char **argv) {
 				quiet_mode = 1;
 				break;
 
+			case 'o':
+				force_md5 = 1;
+				break;
+
 			case 'l':
 				run_mndp = 1;
 				break;
@@ -546,7 +598,6 @@ int main (int argc, char **argv) {
 			case '?':
 				print_help = 1;
 				break;
-
 		}
 	}
 	if (run_mndp) {
@@ -554,28 +605,34 @@ int main (int argc, char **argv) {
 	}
 	if (argc - optind < 1 || print_help) {
 		print_version();
-		fprintf(stderr, _("Usage: %s <MAC|identity> [-h] [-n] [-a <path>] [-A] [-t <timeout>] [-u <user>] [-p <password>] [-U <user>] | -l [-B] [-t <timeout>]\n"), argv[0]);
+		fprintf(stderr,
+				_("Usage: %s <MAC|identity> [-nqoA] [-a <path>] [-t <timeout>] [-u <user>] [-p <password>] [-U <user>] "
+				  "| -l [-B] [-t <timeout>]\n"),
+				argv[0]);
 
 		if (print_help) {
-			fprintf(stderr, _("\nParameters:\n"
-			"  MAC            MAC-Address of the RouterOS/mactelnetd device. Use mndp to\n"
-			"                 discover it.\n"
-			"  identity       The identity/name of your destination device. Uses\n"
-			"                 MNDP protocol to find it.\n"
-			"  -l             List/Search for routers nearby (MNDP). You may use -t to set timeout.\n"
-			"  -B             Batch mode. Use computer readable output (CSV), for use with -l.\n"
-			"  -n             Do not use broadcast packets. Less insecure but requires\n"
-			"                 root privileges.\n"
-			"  -a <path>      Use specified path instead of the default: %s for autologin config file.\n"
-			"  -A             Disable autologin feature.\n"
-			"  -t <timeout>   Amount of seconds to wait for a response on each interface.\n"
-			"  -u <user>      Specify username on command line.\n"
-			"  -p <password>  Specify password on command line.\n"
-			"  -U <user>      Drop privileges to this user. Used in conjunction with -n\n"
-			"                 for security.\n"
-			"  -q             Quiet mode.\n"
-			"  -h             This help.\n"
-			"\n"), AUTOLOGIN_PATH);
+			fprintf(stderr,
+					_("\nParameters:\n"
+					  "  MAC            MAC-Address of the RouterOS/mactelnetd device. Use mndp to\n"
+					  "                 discover it.\n"
+					  "  identity       The identity/name of your destination device. Uses\n"
+					  "                 MNDP protocol to find it.\n"
+					  "  -l             List/Search for routers nearby (MNDP). You may use -t to set timeout.\n"
+					  "  -B             Batch mode. Use computer readable output (CSV), for use with -l.\n"
+					  "  -n             Do not use broadcast packets. Less insecure but requires\n"
+					  "                 root privileges.\n"
+					  "  -a <path>      Use specified path instead of the default: %s for autologin config file.\n"
+					  "  -A             Disable autologin feature.\n"
+					  "  -t <timeout>   Amount of seconds to wait for a response on each interface.\n"
+					  "  -u <user>      Specify username on command line.\n"
+					  "  -p <password>  Specify password on command line.\n"
+					  "  -U <user>      Drop privileges to this user. Used in conjunction with -n\n"
+					  "                 for security.\n"
+					  "  -q             Quiet mode.\n"
+					  "  -o             Force old MD5 authentication algorithm.\n"
+					  "  -h             This help.\n"
+					  "\n"),
+					AUTOLOGIN_PATH);
 		}
 		return 1;
 	}
@@ -636,14 +693,14 @@ int main (int argc, char **argv) {
 	}
 
 	if (!use_raw_socket) {
-		if (setsockopt(insockfd, SOL_SOCKET, SO_BROADCAST, &optval, sizeof (optval))==-1) {
+		if (setsockopt(insockfd, SOL_SOCKET, SO_BROADCAST, &optval, sizeof(optval)) == -1) {
 			perror("SO_BROADCAST");
 			return 1;
 		}
 	}
 
 	/* Need to use, to be able to autodetect which interface to use */
-	setsockopt(insockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof (optval));
+	setsockopt(insockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
 
 	/* Get mac-address from string, or check for hostname via mndp */
 	if (!query_mndp_or_mac(argv[optind], dstmac, !quiet_mode)) {
@@ -656,24 +713,20 @@ int main (int argc, char **argv) {
 			printf(_("Login: "));
 			fflush(stdout);
 		}
-		scanf("%127s", username);
+		(void)scanf("%127s", username);
 	}
 
 	if (!have_password) {
 		char *tmp;
 		tmp = getpass(quiet_mode ? "" : _("Password: "));
-#if defined(__linux__) && defined(_POSIX_MEMLOCK_RANGE)
+#if defined(_POSIX_MEMLOCK_RANGE) && _POSIX_MEMLOCK_RANGE > 0
 		mlock(password, sizeof(password));
 #endif
 		strncpy(password, tmp, sizeof(password) - 1);
 		password[sizeof(password) - 1] = '\0';
 		/* security */
 		memset(tmp, 0, strlen(tmp));
-#ifdef __linux__
-		free(tmp);
-#endif
 	}
-
 
 	/* Set random source port */
 	sourceport = 1024 + (rand() % 1024);
@@ -685,15 +738,22 @@ int main (int argc, char **argv) {
 	/* Session key */
 	sessionkey = rand() % 65535;
 
+	/* Private key */
+#if defined(_POSIX_MEMLOCK_RANGE) && _POSIX_MEMLOCK_RANGE > 0
+	mlock(&mtwei, sizeof(mtwei));
+#endif
+	mtwei_init(&mtwei);
+	private_key = mtwei_keygen(&mtwei, public_key, NULL);
+
 	/* stop output buffering */
-	setvbuf(stdout, (char*)NULL, _IONBF, 0);
+	setvbuf(stdout, (char *)NULL, _IONBF, 0);
 
 	if (!quiet_mode) {
 		printf(_("Connecting to %s..."), ether_ntoa((struct ether_addr *)dstmac));
 	}
 
 	/* Initialize receiving socket on the device chosen */
-	memset((char *) &si_me, 0, sizeof(si_me));
+	memset((char *)&si_me, 0, sizeof(si_me));
 	si_me.sin_family = AF_INET;
 	si_me.sin_port = htons(sourceport);
 
@@ -717,6 +777,17 @@ int main (int argc, char **argv) {
 	init_packet(&data, MT_PTYPE_DATA, srcmac, dstmac, sessionkey, 0);
 	outcounter += add_control_packet(&data, MT_CPTYPE_BEGINAUTH, NULL, 0);
 
+	if (force_md5 == 0) {
+		if (strlen(username) + 1 + sizeof(public_key) >= sizeof(loginkey)) {
+			fprintf(stderr, "Username too long\n");
+			exit(1);
+		}
+		strcpy((char *)loginkey, username);
+		memcpy(loginkey + strlen(username) + 1, public_key, sizeof(public_key));
+		outcounter +=
+			add_control_packet(&data, MT_CPTYPE_PASSSALT, loginkey, sizeof(public_key) + strlen(username) + 1);
+	}
+
 	/* TODO: handle result of send_udp */
 	result = send_udp(&data, 1);
 
@@ -737,7 +808,7 @@ int main (int argc, char **argv) {
 		timeout.tv_usec = 0;
 
 		/* Wait for data or timeout */
-		reads = select(insockfd+1, &read_fds, NULL, NULL, &timeout);
+		reads = select(insockfd + 1, &read_fds, NULL, NULL, &timeout);
 		if (reads > 0) {
 			/* Handle data from server */
 			if (FD_ISSET(insockfd, &read_fds)) {
@@ -762,7 +833,7 @@ int main (int argc, char **argv) {
 					terminal_gone = 1;
 				}
 			}
-		/* Handle select() timeout */
+			/* Handle select() timeout */
 		} else {
 			/* handle keepalive counter, transmit keepalive packet every 10 seconds
 			   of inactivity  */
