@@ -1,0 +1,12 @@
+[Unit]
+Description=MAC-Telnet login service
+Requires=systemd-networkd.service
+After=systemd-networkd.service
+
+[Service]
+Type=forking
+EnvironmentFile=-/etc/default/mactelnet-server
+ExecStart=/usr/sbin/mactelnetd ${DAEMON_OPTS}
+
+[Install]
+WantedBy=multi-user.target

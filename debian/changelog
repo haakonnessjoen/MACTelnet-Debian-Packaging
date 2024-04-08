@@ -1,5 +1,6 @@
-mactelnet (0.4.4-5) UNRELEASED; urgency=medium
+mactelnet (0.5.0-1) UNRELEASED; urgency=medium
 
+  [ Debian Janitor ]
   * Use secure copyright file specification URI.
   * Bump debhelper from deprecated 9 to 12.
   * Set debhelper-compat version in Build-Depends.
@@ -10,7 +11,10 @@ mactelnet (0.4.4-5) UNRELEASED; urgency=medium
   * Rely on pre-initialized dpkg-architecture variables.
   * Fix day-of-week for changelog entries 0.3.4-1, 0.3.2-2.
 
- -- Debian Janitor <janitor@jelmer.uk>  Tue, 28 Apr 2020 20:46:35 +0000
+  [ Håkon Nessjøen ]
+  * Upstream release 0.5.0
+
+ -- Håkon Nessjøen <haakon.nessjoen@gmail.com>  Mon, 08 Apr 2024 07:40:33 +0000
 
 mactelnet (0.4.4-4) unstable; urgency=low
 

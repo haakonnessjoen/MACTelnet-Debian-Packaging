@@ -2,15 +2,15 @@ Source: mactelnet
 Section: net
 Priority: optional
 Maintainer: Håkon Nessjøen <haakon.nessjoen@gmail.com>
-Build-Depends: debhelper-compat (= 12), autoconf (>= 2.68~), automake (>= 1.1)
-Standards-Version: 3.9.8
+Build-Depends: debhelper-compat (= 13), autoconf (>= 2.71), automake (>= 1.16), autopoint (>= 0.21), libssl-dev (>= 1.1), gettext (>=0.21)
+Standards-Version: 4.6.0
 Homepage: https://github.com/haakonnessjoen/MAC-Telnet/
 Vcs-Git: https://github.com/haakonnessjoen/MACTelnet-Debian-Packaging.git
 Vcs-Browser: https://github.com/haakonnessjoen/MACTelnet-Debian-Packaging
 
 Package: mactelnet-client
 Architecture: linux-any kfreebsd-any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, matelnet-locales
 Description: Console tools for telneting and pinging via MAC addresses
  Ping, discovery and telnet tools for connecting to Mikrotik RouterOS
  devices, or other MAC-Telnetd powered machines/devices.
@@ -24,8 +24,15 @@ Description: Console tools for telneting and pinging via MAC addresses
 
 Package: mactelnet-server
 Architecture: linux-any kfreebsd-any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, mactelnet-locales
 Description: Telnet daemon for accepting connections via MAC addresses
  This is a telnet daemon that uses Mikrotiks proprietary MAC-Telnet protocol.
  You will be enabled to "mac-telnet" from Linux machines with mactelnet-client
  or Mikrotik RouterOS devices which already has tools for this.
+
+Package: mactelnet-locales
+Architecture: any
+Depends: ${misc:Depends}
+Description: Language support files for mactelnet-client and mactelnet-server
+ This is language support files for the mactelnet-client and mndp tools, as
+ well as the mactelnet-server login service daemon.
