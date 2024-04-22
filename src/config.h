@@ -65,14 +65,17 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #define HAVE_INTTYPES_H 1
 
-/* Define to 1 if you have the `intl' library (-lintl). */
-/* #undef HAVE_LIBINTL */
-
 /* Define to 1 if you have the <libintl.h> header file. */
 #define HAVE_LIBINTL_H 1
 
+/* Define to 1 if you have the `pthread' library (-lpthread). */
+/* #undef HAVE_LIBPTHREAD */
+
 /* Define to 1 if you have the `rt' library (-lrt). */
 #define HAVE_LIBRT 1
+
+/* Define to 1 if you have the <linux/netlink.h> header file. */
+#define HAVE_LINUX_NETLINK_H 1
 
 /* Define to 1 if you have the <locale.h> header file. */
 #define HAVE_LOCALE_H 1
@@ -138,6 +141,9 @@
 /* Define to 1 if you have the <sys/ioctl.h> header file. */
 #define HAVE_SYS_IOCTL_H 1
 
+/* Define to 1 if you have the <sys/random.h> header file. */
+#define HAVE_SYS_RANDOM_H 1
+
 /* Define to 1 if you have the <sys/socket.h> header file. */
 #define HAVE_SYS_SOCKET_H 1
 
@@ -196,7 +202,7 @@
 #define PACKAGE_NAME "mactelnet"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "mactelnet 0.5.0"
+#define PACKAGE_STRING "mactelnet 0.5.1"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "mactelnet"
@@ -205,7 +211,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.5.0"
+#define PACKAGE_VERSION "0.5.1"
 
 /* Define to 1 if all of the C90 standard headers exist (not just the ones
    required in a freestanding environment). This macro is provided for
@@ -301,7 +307,7 @@
 
 
 /* Version number of package */
-#define VERSION "0.5.0"
+#define VERSION "0.5.1"
 
 /* Define to `int' if <sys/types.h> doesn't define. */
 /* #undef gid_t */

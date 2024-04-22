@@ -87,6 +87,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+@BUILD_MACTELNETD_TRUE@am__append_1 = mactelnetd.1
 subdir = doc
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -165,6 +166,7 @@ AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
+COREFOUNDATION_LIBS = @COREFOUNDATION_LIBS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CRYPTO_CFLAGS = @CRYPTO_CFLAGS@
@@ -217,10 +219,12 @@ PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 POSUB = @POSUB@
+PTHREAD_LIBS = @PTHREAD_LIBS@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
+SYSTEMCONFIGURATION_LIBS = @SYSTEMCONFIGURATION_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 XGETTEXT = @XGETTEXT@
@@ -277,7 +281,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-dist_man_MANS = mactelnet.1 mactelnetd.1 mndp.1 macping.1
+dist_man_MANS = mactelnet.1 mndp.1 macping.1 $(am__append_1)
 all: all-am
 
 .SUFFIXES:

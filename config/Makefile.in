@@ -98,7 +98,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
 	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-DIST_COMMON = $(srcdir)/Makefile.am $(dist_sysconf_DATA) \
+DIST_COMMON = $(srcdir)/Makefile.am $(am__dist_sysconf_DATA_DIST) \
 	$(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/src/config.h
@@ -123,6 +123,7 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
+am__dist_sysconf_DATA_DIST = mactelnetd.users
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
@@ -165,6 +166,7 @@ AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
+COREFOUNDATION_LIBS = @COREFOUNDATION_LIBS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CRYPTO_CFLAGS = @CRYPTO_CFLAGS@
@@ -217,10 +219,12 @@ PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 POSUB = @POSUB@
+PTHREAD_LIBS = @PTHREAD_LIBS@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
+SYSTEMCONFIGURATION_LIBS = @SYSTEMCONFIGURATION_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 XGETTEXT = @XGETTEXT@
@@ -277,7 +281,8 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-dist_sysconf_DATA = mactelnetd.users
+@INSTALL_CONFIG_FALSE@dist_sysconf_DATA = 
+@INSTALL_CONFIG_TRUE@dist_sysconf_DATA = mactelnetd.users
 all: all-am
 
 .SUFFIXES:
@@ -407,6 +412,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+@INSTALL_CONFIG_FALSE@install-exec-hook:
 clean: clean-am
 
 clean-am: clean-generic mostlyclean-am
@@ -491,9 +497,9 @@ uninstall-am: uninstall-dist_sysconfDATA
 .PRECIOUS: Makefile
 
 
-install-exec-hook:
-	       chmod 600 $(DESTDIR)$(sysconfdir)/mactelnetd.users
-				 chown root $(DESTDIR)$(sysconfdir)/mactelnetd.users
+@INSTALL_CONFIG_TRUE@install-exec-hook:
+@INSTALL_CONFIG_TRUE@	chmod 600 $(DESTDIR)$(sysconfdir)/mactelnetd.users
+@INSTALL_CONFIG_TRUE@		chown root $(DESTDIR)$(sysconfdir)/mactelnetd.users
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
