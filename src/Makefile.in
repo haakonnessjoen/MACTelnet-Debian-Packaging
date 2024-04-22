@@ -89,7 +89,8 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = mactelnet$(EXEEXT) macping$(EXEEXT) mndp$(EXEEXT)
-sbin_PROGRAMS = mactelnetd$(EXEEXT)
+@HAVE_LIBINTL_TRUE@am__append_1 = -lintl
+@BUILD_MACTELNETD_TRUE@sbin_PROGRAMS = mactelnetd$(EXEEXT)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -125,7 +126,8 @@ am_mactelnetd_OBJECTS = mactelnetd-mactelnetd.$(OBJEXT) \
 	mactelnetd-console.$(OBJEXT) mactelnetd-users.$(OBJEXT) \
 	mactelnetd-mtwei.$(OBJEXT)
 mactelnetd_OBJECTS = $(am_mactelnetd_OBJECTS)
-mactelnetd_DEPENDENCIES = $(am__DEPENDENCIES_1)
+mactelnetd_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 mactelnetd_LINK = $(CCLD) $(mactelnetd_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 am_mndp_OBJECTS = mndp.$(OBJEXT) protocol.$(OBJEXT)
@@ -217,6 +219,7 @@ AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
+COREFOUNDATION_LIBS = @COREFOUNDATION_LIBS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CRYPTO_CFLAGS = @CRYPTO_CFLAGS@
@@ -243,7 +246,7 @@ INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INTLLIBS = @INTLLIBS@
 INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
-LDFLAGS = @LDFLAGS@
+LDFLAGS = @LDFLAGS@ $(am__append_1)
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
 LIBOBJS = @LIBOBJS@
@@ -269,10 +272,12 @@ PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 POSUB = @POSUB@
+PTHREAD_LIBS = @PTHREAD_LIBS@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
+SYSTEMCONFIGURATION_LIBS = @SYSTEMCONFIGURATION_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 XGETTEXT = @XGETTEXT@
@@ -333,8 +338,8 @@ mactelnet_SOURCES = config.h mactelnet.c mactelnet.h protocol.c protocol.h conso
 mactelnet_CFLAGS = -DFROM_MACTELNET
 mactelnet_LDADD = $(CRYPTO_LIBS)
 mactelnetd_SOURCES = config.h mactelnetd.c protocol.c protocol.h interfaces.c interfaces.h console.c console.h users.c users.h extra.h utlist.h mtwei.c mtwei.h
-mactelnetd_CFLAGS = -DUSERSFILE='"$(sysconfdir)/mactelnetd.users"'
-mactelnetd_LDADD = $(CRYPTO_LIBS)
+mactelnetd_CFLAGS = -DFROM_MACTELNETD -DUSERSFILE='"$(sysconfdir)/mactelnetd.users"'
+mactelnetd_LDADD = $(CRYPTO_LIBS) $(COREFOUNDATION_LIBS) $(SYSTEMCONFIGURATION_LIBS)
 mndp_SOURCES = config.h mndp.c mndp.h protocol.c protocol.h extra.h
 macping_SOURCES = config.h macping.c interfaces.c interfaces.h protocol.c protocol.h extra.h utlist.h
 AM_CPPFLAGS = -DLOCALEDIR='"$(localedir)"'
@@ -956,6 +961,12 @@ uninstall-am: uninstall-binPROGRAMS uninstall-sbinPROGRAMS
 
 .PRECIOUS: Makefile
 
+
+@BUILD_MACTELNETD_TRUE@mactelnetd-interface.o: interfaces.c
+@BUILD_MACTELNETD_TRUE@	$(COMPILE) $(mactelnetd_CFLAGS) $(OUTPUT_OPTION) $<
+
+mactelnet-interface.o: interfaces.c
+	$(COMPILE) $(mactelnet_CFLAGS) $(OUTPUT_OPTION) $<
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
