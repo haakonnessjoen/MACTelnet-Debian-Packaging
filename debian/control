@@ -31,7 +31,7 @@ Description: Telnet daemon for accepting connections via MAC addresses
  or Mikrotik RouterOS devices which already has tools for this.
 
 Package: mactelnet-locales
-Architecture: any
+Architecture: all
 Depends: ${misc:Depends}
 Description: Language support files for mactelnet-client and mactelnet-server
  This is language support files for the mactelnet-client and mndp tools, as
